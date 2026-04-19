@@ -1,0 +1,1035 @@
+Laravel Sales Inventory Project => Ostad Batch09 Module 24, 25:
+===============================================================
+
+Laravel Sales Inventory Project [Back End]:
+-------------------------------------------
+
+1. => Planning & Environment Setup:
+-----------------------------------
+1. A) Install Laravel Project:
+Command: composer global require laravel/installer
+Then, Command: laravel new ims
+Then, Answer Some Question
+
+
+1. B) Edit .env:
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=b9_ims
+DB_USERNAME=root
+DB_PASSWORD=
+
+Then, Command: php artisan migrate
+Then, Command: php artisan serve
+
+1. C) Create Categories Table and Model
+Command: php artisan make:model Category -m
+Edit database>migration>2026_04_13_051711_create_categories_table.php:
+----------------------------------------------------------------------
+Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->boolean('status')->default(true);
+            $table->timestamps();
+        });
+
+Then, Command: php artisan migrate
+
+
+Edit app>Models>Category.php:
+-----------------------------
+use HasFactory;
+
+    // Protected
+    protected $fillable = [
+        'category_id',
+        'product_name',
+        'sku',
+        'unit',
+        'image_path',
+        'low_stock_threshold',
+        'color',
+        'size',
+        'weight',
+        'price',
+        'status',
+        'stock_qty',
+    ];
+
+    // Data Type
+    protected $casts = [
+        'status' => 'boolean',
+        'price' => 'decimal:2',
+        'weight' => 'decimal:2',
+    ];
+
+    // Product to Relation Category
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // Invoice Item relation to Category
+    public function invoiceItems()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
+    // Stock Movement relation to Category
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
+
+
+
+1. D) Create Products Table and Model
+Command: php artisan make:model Product -m
+Edit database>migration>2026_04_13_052414_create_products_table.php:
+----------------------------------------------------------------------
+Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('category_id')->constrained('categories')->onDelete('restrict');
+            $table->string('product_name');
+            $table->string('sku')->unique();
+            $table->string('unit')->default('pcs'); // pcs, kg, box, etc.
+            $table->string('image_path')->nullable();
+            $table->integer('low_stock_threshold')->default(0);
+            $table->string('color')->nullable();
+            $table->string('size')->nullable();
+            $table->decimal('weight', 10, 2)->nullable();
+            $table->decimal('price', 12, 2)->default(0);
+            $table->boolean('status')->default(true);
+            $table->integer('stock_qty')->default(0);
+            $table->timestamps();
+        });
+
+Then, Command: php artisan migrate
+
+
+Edit app>Models>Product.php:
+-----------------------------
+use HasFactory;
+
+    // Protected
+    protected $fillable = [
+        'name',
+        'description',
+        'status'
+    ];
+
+    // Relation Category to Product
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+
+
+1. E) Create Invoice Table and Model
+Command: php artisan make:model Invoice -m
+Edit database>migration>2026_04_13_061737_create_invoices_table.php:
+----------------------------------------------------------------------
+Schema::create('invoices', function (Blueprint $table) {
+            $table->id();
+            $table->string('invoice_no')->unique();
+            $table->date('invoice_date');
+            $table->decimal('subtotal', 12, 2)->default(0);
+            $table->enum('discount_type', ['fixed', 'percent'])->nullable();
+            $table->decimal('discount_value', 12, 2)->default(0);
+            $table->decimal('discount_amount', 12, 2)->default(0);
+            $table->decimal('grand_total', 12, 2)->default(0);
+            $table->string('status')->default('draft');
+            $table->timestamps();
+        });
+
+Then, Command: php artisan migrate
+
+
+Edit app>Models>Invoice.php:
+-----------------------------
+use HasFactory;
+
+    // Protected
+    protected $fillable = [
+        'invoice_no',
+        'invoice_date',
+        'subtotal',
+        'discount_type',
+        'discount_value',
+        'discount_amount',
+        'grand_total',
+        'status',
+    ];
+
+    // Data Types
+    protected $casts = [
+        'invoice_date' => 'date',
+        'subtotal' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'grand_total' => 'decimal:2',
+    ];
+
+    // Item to relation Invoice
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
+    // Stock Movement relation to Invoice
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
+
+
+
+
+
+1. F) Create StockMovemonet Table and Model
+Command: php artisan make:model StockMovement -m
+Edit database>migration>2026_04_13_063811_create_stock_movements_table.php:
+----------------------------------------------------------------------------
+Schema::create('stock_movements', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('products')->onDelete('restrict');
+            $table->integer('quantity');
+            $table->enum('type', ['IN', 'OUT']);
+            $table->text('note')->nullable();
+            $table->unsignedBigInteger('invoice_id')->nullable();
+            $table->timestamps();
+        });
+
+Then, Command: php artisan migrate
+
+
+Edit app>Models>:StockMovement.php:
+-----------------------------------
+use HasFactory;
+
+    // Protected
+    protected $fillable = [
+        'product_id',
+        'quantity',
+        'type',
+        'note',
+        'invoice_id',
+    ];
+
+    // Product relation to Stock Movement
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    // Invoice relation to Stock Movement
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+
+
+
+1. G) Create InvoiceItem Table and Model
+Command: php artisan make:model InvoiceItem -m
+Edit database>migration>2026_04_13_065519_create_invoice_items_table.php:
+----------------------------------------------------------------------------
+Schema::create('invoice_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('restrict');
+            $table->integer('quantity');
+            $table->decimal('unit_price', 12, 2);
+            $table->enum('discount_type', ['fixed', 'percent'])->nullable();
+            $table->decimal('discount_value', 12, 2)->default(0);
+            $table->decimal('discount_amount', 12, 2)->default(0);
+            $table->decimal('line_total', 12, 2)->default(0);
+            $table->timestamps();
+        });
+
+Then, Command: php artisan migrate
+
+
+Edit app>Models>:InvoiceItem.php:
+-----------------------------------
+use HasFactory;
+
+    // Protected
+    protected $fillable = [
+        'invoice_id',
+        'product_id',
+        'quantity',
+        'unit_price',
+        'discount_type',
+        'discount_value',
+        'discount_amount',
+        'line_total',
+    ];
+
+    // Data Type
+    protected $casts = [
+        'unit_price' => 'decimal:2',
+        'discount_value' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'line_total' => 'decimal:2',
+    ];
+
+    // Product relation to Invoice Item
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+02 => Authentication, Base API Layer, and Category & Product Modules:
+---------------------------------------------------------------------
+02. A) API Install:
+-------------------
+Command: php artisan install:api
+Answer some question and done
+
+
+02. B) Authentication Sanctum Install:
+--------------------------------------
+Command: composer require Laravel/sanctum
+Then Command: php artisan vendor:publish --provider="Laravel\Sanctum\SanctimServiceProvider"
+
+এখন একটা extra personal_access_tokens migration create হছে সেম। নিচের টা ডিলেট করে দেই।
+
+
+
+02. C) Authentication & Version Controller:
+-------------------------------------------
+02. C. ii) Create Controller:
+Command: php artisan make:controller Api/V1/AuthController
+Edit app>http>controllers>Api>V1>AuthController.php:
+----------------------------------------------------
+// Register
+    public function register(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'password' => ['required', 'string', 'min:6', 'confirmed'],
+            ]);
+
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
+
+            $token = $user->createToken('api-token')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User registered successfully!',
+                'data' => [
+                    'user' => $user,
+                    'token' => $token,
+                ],
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong during registration!',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+02. C. ii) Create Route>api.php:
+-------------------------------- 
+Route::prefix('v1')->group(function(){
+    // Registration
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+
+
+02. D. I) Login System:
+Edit app>http>controller>Api>V1>AuthController.php:
+---------------------------------------------------
+// Login
+    public function login(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'email' => ['required', 'string', 'email'],
+                'password' => ['required', 'string', 'min:6'],
+            ]);
+
+            if (!Auth::attempt($validated)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid credentials',
+                ], 401);
+            }
+
+            $user = $request->user();
+            $token = $user->createToken('api-token')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged in successfully!',
+                'data' => [
+                    'user' => $user,
+                    'token' => $token,
+                ],
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 401);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong during login!',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+
+02. D. ii) Create Route>api.php:
+--------------------------------
+Route::prefix('v1')->group(function(){
+    // Login
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+
+
+
+
+
+02. E. I) Logout:
+Edit app>http>controller>Api>V1>AuthController.php:
+---------------------------------------------------
+// Logout
+    public function logout(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated!',
+                ], 401);
+            }
+
+            $user->currentAccessToken()->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged out successfully!',
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong during logout!',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+
+02. E. ii) Create Route>api.php:
+--------------------------------
+// Authenticate Route
+    Route::middleware('auth:sanctum')->group(function () {
+        // Logout
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
+
+
+
+
+
+
+
+03. Category CRUD:
+------------------
+03. A. I) Create CategoryController:
+Command: php artisan make:controller Api/V1/CategoryController
+Edit app>http>controller>Api>V1>CategoryController.php:
+-------------------------------------------------------
+ // Category List
+    public function index()
+    {
+        try {
+            $categories = Category::orderByDesc('id')->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Category retrieve successfully!',
+                'data' => $categories,
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while fetching categories!',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Category Store
+    public function store(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'description' => ['nullable', 'string'],
+                'status' => ['boolean'],
+            ]);
+
+            $category = Category::create($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Category created successfully!',
+                'data' => $category,
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while creating category',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Category Show
+    public function show(int $id)
+    {
+        try {
+            $category = Category::find($id);
+
+            if (!$category) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Category not found',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Category fetched successfullY',
+                'data' => $category,
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while fetch show category',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Category Update
+    public function update(Request $request, int $id)
+    {
+        try {
+            $category = Category::find($id);
+
+            if (!$category) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Category not found',
+                ], 404);
+            }
+
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'description' => ['nullable', 'string'],
+                'status' => ['boolean'],
+            ]);
+
+            $category->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Category updated successfully!',
+                'data' => $category,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while updating category',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Category Delete
+    public function destroy(int $id)
+    {
+        try {
+            $category = Category::find($id);
+            if (!$category) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Category not found!',
+                ], 404);
+            }
+
+            $category->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Category deleted successfully!',
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong delete category',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+
+03. A. ii) Create Api Route>api.php:
+------------------------------------
+Route::prefix('v1')->group(function () {
+    // Authenticate Route
+    Route::middleware('auth:sanctum')->group(function () {
+        // Category Route
+        Route::get('/categories', [CategoryController::class, 'index']);
+        Route::post('/categories', [CategoryController::class, 'store']);
+        Route::get('/categories/{id}', [CategoryController::class, 'show']);
+        Route::put('/categories/{id}', [CategoryController::class, 'update']);
+        Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+    });
+});
+
+
+
+
+
+
+
+03. B) Product CRUD:
+--------------------
+03. B. I) Create Controller:
+Command: php artisan make:controller Api/V1/ProductController
+Eidt app>http>controller>Api>V1>ProductController.php:
+------------------------------------------------------
+// Product List
+    public function index()
+    {
+        try {
+            $products = Product::with('category')->get();
+            return response()->json([
+                'success' => true,
+                'message' => 'Product list fetched successfully!',
+                'data' => $products,
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while fetching product!',
+            ], 500);
+        }
+    }
+
+    // Product Store
+    public function store(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'category_id' => ['required', 'integer', 'exists:categories,id'],
+                'product_name' => ['required', 'string', 'max:255'],
+                'sku' => ['required', 'string', 'max:255', 'unique:products,sku'],
+                'unit' => ['required', 'string', 'max:50'],
+                'image_path' => ['nullable', 'string', 'max:255'],
+                'low_stock_threshold' => ['nullable', 'integer', 'min:0'],
+                'color' => ['nullable', 'string', 'max:100'],
+                'size' => ['nullable', 'string', 'max:100'],
+                'weight' => ['nullable', 'numeric', 'min:0'],
+                'price' => ['required', 'numeric', 'min:0'],
+                'status' => ['boolean'],
+                'stock_qty' => ['nullable', 'integer', 'min:0'],
+            ]);
+
+            $product = Product::create($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product created successfully!',
+                'data' => $product->load('category'),
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error!',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while store product!',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Product Show
+    public function show(int $id)
+    {
+        try {
+            $product = Product::with('category')->find($id);
+            if (!$product) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found!',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product fetched successfully!',
+                'data' => $product,
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong fetch show product',
+            ], 500);
+        }
+    }
+
+    // Product Update
+    public function update(Request $request, int $id)
+    {
+        try {
+            $product = Product::find($id);
+            if (!$product) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found',
+                ], 404);
+            }
+
+            $validated = $request->validate([
+                'category_id' => ['required', 'integer', 'exists:categories,id'],
+                'product_name' => ['required', 'string', 'max:255'],
+                'sku' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('products', 'sku')->ignore($product->id),
+                ],
+                'unit' => ['required', 'string', 'max:50'],
+                'image_path' => ['nullable', 'string', 'max:255'],
+                'low_stock_threshold' => ['nullable', 'integer', 'min:0'],
+                'color' => ['nullable', 'string', 'max:100'],
+                'size' => ['nullable', 'string', 'max:100'],
+                'weight' => ['nullable', 'numeric', 'min:0'],
+                'price' => ['required', 'numeric', 'min:0'],
+                'status' => ['boolean'],
+                'stock_qty' => ['nullable', 'integer', 'min:0'],
+            ]);
+
+            $product->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product updated successfully!',
+                'data' => $product->load('category'),
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error!',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while update product!',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Product Delete
+    public function destroy(int $id)
+    {
+        try {
+            $product =  Product::find($id);
+
+            if (!$product) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found',
+                ], 404);
+            }
+
+            $product->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Product deleted successfully!',
+            ], 200);
+        } catch (Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong delete product',
+            ], 500);
+        }
+    }
+
+
+
+03. B. ii) Create api Route>api.php:
+------------------------------------
+Route::prefix('v1')->group(function () {
+
+    // Authenticate Route
+    Route::middleware('auth:sanctum')->group(function () {
+     
+        // Product Route
+        Route::get('/products', [ProductController::class, 'index']);
+        Route::post('/products', [ProductController::class, 'store']);
+        Route::get('/products/{id}', [ProductController::class, 'show']);
+        Route::put('/products/{id}', [ProductController::class, 'update']);
+        Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+    });
+
+
+
+
+
+
+
+
+Stock Management, Invoice Management, and Low Stock Alerts:
+-----------------------------------------------------------
+04. => Stock Movement CRUD:
+---------------------------
+04. A. I) Create Controller
+Command: php artisan make:controller Api/V1/StockController
+Edit app>http>controller>Api>V1>StockController.php:
+----------------------------------------------------
+// Stock Movement List
+    public function index()
+    {
+        try {
+            $stockMovements = StockMovement::with('product.category')->orderByDesc('id')
+                ->get();
+            return response()->json([
+                'success' => true,
+                'message' => 'Stock movements list fetched successfully!',
+                'data' => $stockMovements,
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while fetching stock movements',
+            ], 500);
+        }
+    }
+
+    // Stock IN
+    public function stockIn(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'product_id' => ['required', 'integer', 'exists:products,id'],
+                'quantity' => ['required', 'integer', 'min:1'],
+                'note' => ['nullable', 'string'],
+            ]);
+
+            DB::beginTransaction();
+            // Stock Store
+            $stockMovement = StockMovement::create([
+                'product_id' => $validated['product_id'],
+                'quantity' => $validated['quantity'],
+                'type' => 'IN',
+                'note' => $validated['note'] ?? null,
+            ]);
+
+            // Product Table stock_qty Update
+            $product = Product::findOrFail($validated['product_id']);
+
+            // Option: 1
+            // $old_stock = $product->stock_qty;
+            // $updated_stock = $old_stock + $validated['quantity'];
+            // $product->stock_qty = $updated_stock;
+            // $product->save();
+
+            // Option: 2
+            $product->stock_qty += $validated['quantity'];
+            $product->save();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Stock IN recorded successfully!',
+                'data' => $stockMovement,
+            ], 201);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error!',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while recording Stock IN',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Stock Adjustment
+    public function stockAdjustment(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'product_id' => ['required', 'integer', 'exists:products,id'],
+                'quantity' => ['required', 'integer'],
+                'type' => ['required', 'string', 'in:IN,OUT'],
+                'note' => ['nullable', 'string'],
+                'invoice_id' => ['nullable', 'integer', 'exists:invoices,id'],
+            ]);
+
+            DB::beginTransaction();
+
+            // Stock Store
+            $stockMovement = StockMovement::create([
+                'product_id' => $validated['product_id'],
+                'quantity' => $validated['quantity'],
+                'type' => $validated['type'],
+                'note' => $validated['note'] ?? null,
+                'invoice_id' => $validated['invoice_id'] ?? null,
+            ]);
+
+            // Update product stock quantity based on adjustment type
+            $product = Product::findOrFail($validated['product_id']);
+
+            if ($validated['type'] == 'IN') {
+                $product->stock_qty += $validated['quantity'];
+            } else {
+                if ($product->stock_qty < $validated['quantity']) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Insufficient stock for OUT adjustment',
+                    ], 400);
+                }
+                $product->stock_qty -= $validated['quantity'];
+            }
+            $product->save();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Stock adjustment successful',
+                'data' => $stockMovement,
+            ], 201);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong while recording stock adjustment',
+                'errors' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+
+04. A. ii) Create Route>api.php:
+--------------------------------
+
+Route::prefix('v1')->group(function () {
+    
+    // Authenticate Route
+    Route::middleware('auth:sanctum')->group(function () {
+        
+        // Stock Movements Route
+        Route::get('/stocks', [StockController::class, 'index']);
+        Route::post('/stocks', [StockController::class, 'stockIn']);
+        Route::post('/stocks/adjustment', [StockController::class, 'stockAdjustment']);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
