@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\InvoiceController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\StockController;
 use Illuminate\Http\Request;
@@ -43,5 +44,12 @@ Route::prefix('v1')->group(function () {
         Route::get('/stocks', [StockController::class, 'index']);
         Route::post('/stocks', [StockController::class, 'stockIn']);
         Route::post('/stocks/adjustment', [StockController::class, 'stockAdjustment']);
+
+        // Invoice Route
+        Route::get('/invoices', [InvoiceController::class, 'index']);
+        Route::post('/invoices', [InvoiceController::class, 'store']);
+        Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
+        Route::put('/invoices/{id}', [InvoiceController::class, 'update']);
+        Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy']);
     });
 });
