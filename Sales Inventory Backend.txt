@@ -1,5 +1,5 @@
-Laravel Sales Inventory Project => Ostad Batch09 Module 24, 25:
-===============================================================
+Laravel Sales Inventory Project Backend => Ostad Batch# 09 Module 24:
+=====================================================================
 
 Laravel Sales Inventory Project [Back End]:
 -------------------------------------------
@@ -1396,7 +1396,14 @@ Route::prefix('v1')->group(function () {
 
 
 
- 
+
+
+
+
+
+
+
+
 
 
 
