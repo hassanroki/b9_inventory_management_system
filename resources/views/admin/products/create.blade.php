@@ -1,7 +1,8 @@
+<!-- Add Product Modal -->
 <div class="modal fade" id="productCreateModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
-            <form action="#" method="POST" onsubmit="return false;">
+            <form id="productCreateForm">
                 <div class="modal-header border-0 pb-0">
                     <h5 class="modal-title fw-semibold d-flex align-items-center gap-2">
                         <i class="bi bi-box-seam text-primary"></i>
@@ -34,10 +35,7 @@
                                 <label class="form-label" for="productCategoryId">Category <span
                                         class="text-danger">*</span></label>
                                 <select name="category_id" id="productCategoryId" class="form-select" required>
-                                    <option value="" selected disabled>Select category</option>
-                                    <option value="1">Electronics</option>
-                                    <option value="2">Groceries</option>
-                                    <option value="3">Stationery</option>
+
                                 </select>
                             </div>
                         </div>
@@ -119,7 +117,7 @@
 
                 <div class="modal-footer border-0 pt-0 bg-light rounded-bottom">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <button type="submit" class="btn btn-primary" id="productSaveBtn">
                         <i class="bi bi-check2-circle me-1"></i> Save product
                     </button>
                 </div>
@@ -127,3 +125,74 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        async function doCreateProduct() {
+            let categoryId = document.getElementById('productCategoryId').value;
+            let productName = document.getElementById('productName').value.trim();
+            let sku = document.getElementById('productSku').value.trim();
+            let unit = document.getElementById('productUnit').value.trim();
+            let price = document.getElementById('productPrice').value;
+            let stockQty = document.getElementById('productStockQty').value || 0;
+            let lowStockThreshold = document.getElementById('productLowStockThreshold').value || 0;
+            let statusChecked = document.getElementById('productStatus').checked;
+            let imagePath = document.getElementById('productImagePath').value.trim() || null;
+            let color = document.getElementById('productColor').value.trim() || null;
+            let size = document.getElementById('productSize').value.trim() || null;
+            let weight = document.getElementById('productWeight').value || null;
+            let saveBtn = document.getElementById('productSaveBtn');
+
+            let obj = {
+                category_id: parseInt(categoryId, 10),
+                product_name: productName,
+                sku: sku,
+                unit: unit,
+                price: parseFloat(price) || 0,
+                stock_qty: parseInt(stockQty, 10) || 0,
+                low_stock_threshold: parseInt(lowStockThreshold, 10) || 0,
+                status: statusChecked,
+                image_path: imagePath,
+                color: color,
+                size: size,
+                weight: weight ? parseFloat(weight) : null
+            };
+
+            let URL = '{{ url('/api/v1/products') }}';
+            let token = localStorage.getItem('token');
+
+            saveBtn.disabled = true;
+
+            try {
+                let response = await axios.post(URL, obj, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+
+                if (response.data && response.data.success) {
+                    showSuccessToast(response.data.message || 'Product created successfully.');
+                    let modalEl = document.getElementById('productCreateModal');
+                    let modal = window.bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    document.getElementById('productCreateForm').reset();
+                    document.getElementById('productStatus').checked = true;
+                    document.getElementById('productStockQty').value = 0;
+                    document.getElementById('productLowStockThreshold').value = 0;
+                    if (typeof getProducts === 'function') getProducts();
+                } else {
+                    showErrorToast(getErrorMessage(null, 'Failed to create product.'));
+                }
+            } catch (err) {
+                showErrorToast(getErrorMessage(err, 'Failed to create product. Please try again.'));
+            } finally {
+                saveBtn.disabled = false;
+            }
+        }
+
+        document.getElementById('productCreateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await doCreateProduct();
+        });
+    </script>
+@endpush

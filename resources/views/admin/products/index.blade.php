@@ -25,70 +25,9 @@
                             <th class="text-end" style="width: 160px;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="productList">
                         <!-- Static demo data (design only) -->
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <div class="fw-semibold">iPhone 15 Pro</div>
-                                <div class="text-muted small">Color: Natural Titanium • Size: 256GB</div>
-                            </td>
-                            <td class="text-muted">APL-IP15P-256</td>
-                            <td class="fw-semibold">Electronics</td>
-                            <td class="text-muted">pcs</td>
-                            <td class="fw-semibold">$ 1,299.00</td>
-                            <td>
-                                <span class="badge text-bg-success">42</span>
-                            </td>
-                            <td><span class="badge text-bg-success">Active</span></td>
-                            <td class="text-muted">2026-02-01</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>
-                                <div class="fw-semibold">Notebook (A5)</div>
-                                <div class="text-muted small">Weight: 0.25kg</div>
-                            </td>
-                            <td class="text-muted">ST-NB-A5-001</td>
-                            <td class="fw-semibold">Stationery</td>
-                            <td class="text-muted">pcs</td>
-                            <td class="fw-semibold">$ 2.50</td>
-                            <td>
-                                <span class="badge text-bg-warning">3</span>
-                                <div class="text-muted small">Low stock</div>
-                            </td>
-                            <td><span class="badge text-bg-success">Active</span></td>
-                            <td class="text-muted">2026-02-02</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>
-                                <div class="fw-semibold">Premium Rice</div>
-                                <div class="text-muted small">Weight: 5.00kg</div>
-                            </td>
-                            <td class="text-muted">GR-RICE-5KG</td>
-                            <td class="fw-semibold">Groceries</td>
-                            <td class="text-muted">kg</td>
-                            <td class="fw-semibold">$ 12.99</td>
-                            <td>
-                                <span class="badge text-bg-secondary">0</span>
-                                <div class="text-muted small">Out of stock</div>
-                            </td>
-                            <td><span class="badge text-bg-secondary">Inactive</span></td>
-                            <td class="text-muted">2026-02-03</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -97,4 +36,103 @@
 
     <!-- Add Product Modal -->
     @include('admin.products.create')
+    <!-- Edit Product Modal -->
+    @include('admin.products.edit')
+    <!-- Delete Product Modal -->
+    @include('admin.products.delete')
+
+    @push('scripts')
+        <script>
+            getProducts();
+            loadProductCategories();
+
+            // Category load when create and edit category drop down show
+            async function loadProductCategories() {
+                let URL = '{{ url('/api/v1/categories') }}';
+                let token = localStorage.getItem('token');
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+                    let categories = response.data['data'] || [];
+                    let createSelect = document.getElementById('productCategoryId');
+                    let editSelect = document.getElementById('productEditCategoryId');
+                    if (createSelect) {
+                        createSelect.innerHTML = '<option value="" selected disabled>Select category</option>';
+                        categories.forEach((c) => {
+                            createSelect.innerHTML += '<option value="' + c.id + '">' + (c.name || '') +
+                                '</option>';
+                        });
+                    }
+                    if (editSelect) {
+                        editSelect.innerHTML = '<option value="" selected disabled>Select category</option>';
+                        categories.forEach((c) => {
+                            editSelect.innerHTML += '<option value="' + c.id + '">' + (c.name || '') + '</option>';
+                        });
+                    }
+                } catch (err) {
+                    showErrorToast(getErrorMessage(err, 'Failed to load categories.'));
+                }
+            }
+
+            // Get Product Data
+            async function getProducts() {
+                let URL = '{{ url('/api/v1/products') }}';
+                let token = localStorage.getItem('token');
+                let tbody = document.getElementById('productList');
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+                    let products = response.data['data'] || [];
+                    tbody.innerHTML = '';
+                    products.forEach((item) => {
+                        let created = item['created_at'] ? item['created_at'].substring(0, 10) : '-';
+                        let statusBadge = item['status'] ? '<span class="badge text-bg-success">Active</span>' :
+                            '<span class="badge text-bg-secondary">Inactive</span>';
+                        let categoryName = item['category'] && item['category']['name'] ? item['category']['name'] :
+                            '-';
+                        let price = item['price'] != null ? parseFloat(item['price']).toFixed(2) : '0.00';
+                        let stock = item['stock_qty'] != null ? item['stock_qty'] : 0;
+                        let stockBadge = stock > 0 ? '<span class="badge text-bg-success">' + stock + '</span>' :
+                            '<span class="badge text-bg-secondary">' + stock + '</span>';
+                        let subtext = [];
+                        if (item['color']) subtext.push('Color: ' + item['color']);
+                        if (item['size']) subtext.push('Size: ' + item['size']);
+                        if (item['weight']) subtext.push('Weight: ' + item['weight'] + 'kg');
+                        let subtextHtml = subtext.length ? '<div class="text-muted small">' + subtext.join(' • ') +
+                            '</div>' : '';
+                        tbody.innerHTML += (`
+                <tr>
+                    <td>${item['id']}</td>
+                    <td>
+                        <div class="fw-semibold">${item['product_name'] || ''}</div>
+                        ${subtextHtml}
+                    </td>
+                    <td class="text-muted">${item['sku'] || ''}</td>
+                    <td class="fw-semibold">${categoryName}</td>
+                    <td class="text-muted">${item['unit'] || ''}</td>
+                    <td class="fw-semibold">$ ${price}</td>
+                    <td>${stockBadge}</td>
+                    <td>${statusBadge}</td>
+                    <td class="text-muted">${created}</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editProduct(${item['id']})">Edit</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${item['id']})">Delete</button>
+                    </td>
+                </tr>
+            `);
+                    });
+                } catch (err) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="10" class="text-center text-muted py-4">Failed to load products.</td></tr>';
+                    showErrorToast(getErrorMessage(err, 'Failed to load products.'));
+                }
+            }
+        </script>
+    @endpush
 @endsection
