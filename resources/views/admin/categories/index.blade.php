@@ -22,41 +22,9 @@
                             <th class="text-end" style="width: 160px;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="categoriesTableBody">
                         <!-- Static demo data (design only) -->
-                        <tr>
-                            <td>1</td>
-                            <td class="fw-semibold">Electronics</td>
-                            <td class="text-muted">Phones, laptops, accessories</td>
-                            <td><span class="badge text-bg-success">Active</span></td>
-                            <td class="text-muted">2026-02-01</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="fw-semibold">Groceries</td>
-                            <td class="text-muted">Daily essentials and food items</td>
-                            <td><span class="badge text-bg-success">Active</span></td>
-                            <td class="text-muted">2026-02-02</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td class="fw-semibold">Stationery</td>
-                            <td class="text-muted">Pens, notebooks, office supplies</td>
-                            <td><span class="badge text-bg-secondary">Inactive</span></td>
-                            <td class="text-muted">2026-02-03</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -65,4 +33,52 @@
 
     <!-- Add Category Modal -->
     @include('admin.categories.create')
+    <!-- Edit Category Modal -->
+    @include('admin.categories.edit')
+    <!-- Delete Category Modal -->
+    @include('admin.categories.delete')
+
+    @push('scripts')
+        <script>
+            getCategories();
+            async function getCategories() {
+                let URL = '{{ url('/api/v1/categories') }}';
+                let token = localStorage.getItem('token');
+                let tbody = document.getElementById('categoriesTableBody');
+
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+
+                    let categories = response.data['data'] || [];
+                    tbody.innerHTML = '';
+                    categories.forEach((item) => {
+                        let created = item['created_at'] ? item['created_at'].substring(0, 10) : '-';
+                        let statusBadge = item['status'] ? '<span class="badge text-bg-success">Active</span>' :
+                            '<span class="badge text-bg-secondary">Inactive</span>';
+                        tbody.innerHTML += (
+                            `<tr>
+                                <td>${item['id']}</td>
+                                <td class="fw-semibold">${item['name']}</td>
+                                <td class="text-muted">${item['description']}</td>
+                                <td>${statusBadge}</td>
+                                <td class="text-muted">${created}</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCategory(${item['id']})">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${item['id']})">Delete</button>
+                                </td>
+                            </tr>`
+                        );
+                    });
+                } catch (error) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="6" class="text-center text-muted py-4">Failed to load categories.</td></tr>';
+                    showErrorToast(getErrorMessage(error, 'Failed to load categories.'));
+                }
+            }
+        </script>
+    @endpush
 @endsection

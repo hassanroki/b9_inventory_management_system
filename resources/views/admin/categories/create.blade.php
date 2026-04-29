@@ -1,7 +1,7 @@
 <div class="modal fade" id="categoryCreateModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form action="#" method="POST" onsubmit="return false;">
+            <form id="categoryCreateForm">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Category</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <button type="submit" id="categorySaveBtn" class="btn btn-primary">
                         <i class="bi bi-check2-circle me-1"></i> Save
                     </button>
                 </div>
@@ -35,3 +35,63 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        async function doCreateCategory() {
+            let nameValue = document.getElementById('categoryName').value.trim();
+            let descriptionValue = document.getElementById('categoryDescription').value.trim();
+            let statusChecked = document.getElementById('categoryStatus').checked;
+            let saveBtn = document.getElementById('categorySaveBtn');
+
+
+            let obj = {
+                name: nameValue,
+                description: descriptionValue,
+                status: statusChecked,
+            }
+
+            let URL = '{{ url('/api/v1/categories') }}';
+            let token = localStorage.getItem('token');
+
+            saveBtn.disable = true;
+
+            try {
+                let response = await axios.post(URL, obj, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+
+                if (response.data && response.data.success) {
+                    showSuccessToast(response.data.message || 'Category created successfully!');
+                    let modalEl = document.getElementById('categoryCreateModal');
+                    let modal = window.bootstrap.Modal.getInstance(modalEl);
+
+                    // if (modal) {
+                    //     modal.hide();
+                    // }
+
+                    // // or
+                    if (modal) modal.hide();
+                    document.getElementById('categoryCreateForm').reset();
+                    document.getElementById('categoryStatus').checked = true;
+
+                    // data reload
+                    if (typeof getCategories === 'function') getCategories();
+                } else {
+                    showErrorToast(getErrorMessage(null, 'Failed to create category'));
+                }
+            } catch (error) {
+                showErrorToast(getErrorMessage(error, 'Failed to create category'));
+            } finally {
+                saveBtn.disable = false;
+            }
+        }
+
+        document.getElementById('categoryCreateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await doCreateCategory();
+        });
+    </script>
+@endpush
