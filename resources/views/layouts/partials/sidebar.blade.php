@@ -29,4 +29,11 @@
             <span>Invoices</span>
         </a>
     </nav>
+
+    <div class="sidebar-footer mt-auto">
+        <button type="button" class="nav-link border-0 bg-transparent w-100 text-start" id="logoutBtn">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Log out</span>
+        </button>
+    </div>
 </aside>
