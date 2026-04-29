@@ -33,10 +33,15 @@
 
     </div>
 
+    {{-- Axios --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Bootstrap 5 JS (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- Common JS --}}
+    <script src="{{ asset('js/common.js') }}"></script>
     <!-- Admin layout JS -->
     <script src="{{ asset('js/admin.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

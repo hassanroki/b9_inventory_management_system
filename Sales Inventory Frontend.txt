@@ -351,13 +351,19 @@ Edit resources>views>layouts>admin.blade.php:
 
     </div>
 
+    {{-- Axios --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Bootstrap 5 JS (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- Common JS --}}
+    <script src="{{ asset('js/common.js') }}"></script>
     <!-- Admin layout JS -->
     <script src="{{ asset('js/admin.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>
+
 
 
 
@@ -562,28 +568,6 @@ Edit resources>views>admin>dashboard>index.blade.php:
                             <td class="text-muted">Phones, laptops, accessories</td>
                             <td><span class="badge text-bg-success">Active</span></td>
                             <td class="text-muted">2026-02-01</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="fw-semibold">Groceries</td>
-                            <td class="text-muted">Daily essentials and food items</td>
-                            <td><span class="badge text-bg-success">Active</span></td>
-                            <td class="text-muted">2026-02-02</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td class="fw-semibold">Stationery</td>
-                            <td class="text-muted">Pens, notebooks, office supplies</td>
-                            <td><span class="badge text-bg-secondary">Inactive</span></td>
-                            <td class="text-muted">2026-02-03</td>
                             <td class="text-end">
                                 <button type="button" class="btn btn-sm btn-outline-secondary" disabled>Edit</button>
                                 <button type="button" class="btn btn-sm btn-outline-danger" disabled>Delete</button>
@@ -2089,16 +2073,398 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login ');
 
 
 
+2. C) Categories CRUD:
+----------------------
+2. C. i) Edit resources>views>admin>categories>index.blade.php:
+---------------------------------------------------------------
+@extends('layouts.admin')
+@section('title', 'Categories')
+
+@section('content')
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span>Category List</span>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#categoryCreateModal">
+                <i class="bi bi-plus-lg me-1"></i> Add Category
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 70px;">#</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th style="width: 110px;">Status</th>
+                            <th style="width: 130px;">Created</th>
+                            <th class="text-end" style="width: 160px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categoriesTableBody">
+                        <!-- Static demo data (design only) -->
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    @include('admin.categories.create')
+    <!-- Edit Category Modal -->
+    @include('admin.categories.edit')
+    <!-- Delete Category Modal -->
+    @include('admin.categories.delete')
+
+    @push('scripts')
+        <script>
+            getCategories();
+            async function getCategories() {
+                let URL = '{{ url('/api/v1/categories') }}';
+                let token = localStorage.getItem('token');
+                let tbody = document.getElementById('categoriesTableBody');
+
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+
+                    let categories = response.data['data'] || [];
+                    tbody.innerHTML = '';
+                    categories.forEach((item) => {
+                        let created = item['created_at'] ? item['created_at'].substring(0, 10) : '-';
+                        let statusBadge = item['status'] ? '<span class="badge text-bg-success">Active</span>' :
+                            '<span class="badge text-bg-secondary">Inactive</span>';
+                        tbody.innerHTML += (
+                            `<tr>
+                                <td>${item['id']}</td>
+                                <td class="fw-semibold">${item['name']}</td>
+                                <td class="text-muted">${item['description']}</td>
+                                <td>${statusBadge}</td>
+                                <td class="text-muted">${created}</td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCategory(${item['id']})">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${item['id']})">Delete</button>
+                                </td>
+                            </tr>`
+                        );
+                    });
+                } catch (error) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="6" class="text-center text-muted py-4">Failed to load categories.</td></tr>';
+                    showErrorToast(getErrorMessage(error, 'Failed to load categories.'));
+                }
+            }
+        </script>
+    @endpush
+@endsection
 
 
 
 
 
+2. C. ii) Edit resources>views>admin>categories>create.blade.php:
+-----------------------------------------------------------------
+<div class="modal fade" id="categoryCreateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form id="categoryCreateForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="categoryName">Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" id="categoryName" class="form-control"
+                            placeholder="e.g. Electronics" maxlength="255" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="categoryDescription">Description</label>
+                        <textarea name="description" id="categoryDescription" class="form-control" rows="3"
+                            placeholder="Optional description"></textarea>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="status" value="1"
+                            id="categoryStatus" checked>
+                        <label class="form-check-label" for="categoryStatus">Active</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" id="categorySaveBtn" class="btn btn-primary">
+                        <i class="bi bi-check2-circle me-1"></i> Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        async function doCreateCategory() {
+            let nameValue = document.getElementById('categoryName').value.trim();
+            let descriptionValue = document.getElementById('categoryDescription').value.trim();
+            let statusChecked = document.getElementById('categoryStatus').checked;
+            let saveBtn = document.getElementById('categorySaveBtn');
+
+
+            let obj = {
+                name: nameValue,
+                description: descriptionValue,
+                status: statusChecked,
+            }
+
+            let URL = '{{ url('/api/v1/categories') }}';
+            let token = localStorage.getItem('token');
+
+            saveBtn.disable = true;
+
+            try {
+                let response = await axios.post(URL, obj, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+
+                if (response.data && response.data.success) {
+                    showSuccessToast(response.data.message || 'Category created successfully!');
+                    let modalEl = document.getElementById('categoryCreateModal');
+                    let modal = window.bootstrap.Modal.getInstance(modalEl);
+
+                    // if (modal) {
+                    //     modal.hide();
+                    // }
+
+                    // // or
+                    if (modal) modal.hide();
+                    document.getElementById('categoryCreateForm').reset();
+                    document.getElementById('categoryStatus').checked = true;
+
+                    // data reload
+                    if (typeof getCategories === 'function') getCategories();
+                } else {
+                    showErrorToast(getErrorMessage(null, 'Failed to create category'));
+                }
+            } catch (error) {
+                showErrorToast(getErrorMessage(error, 'Failed to create category'));
+            } finally {
+                saveBtn.disable = false;
+            }
+        }
+
+        document.getElementById('categoryCreateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await doCreateCategory();
+        });
+    </script>
+@endpush
 
 
 
 
 
+2. C. iii) Create Blade edit.blade.php 
+Edit resources>views>admin>categories>edit.blade.php:
+------------------------------------------------------
+<div class="modal fade" id="categoryEditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form id="categoryEditForm">
+                <input type="hidden" id="categoryEditId" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="categoryEditName">Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" id="categoryEditName" class="form-control"
+                            placeholder="e.g. Electronics" maxlength="255" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="categoryEditDescription">Description</label>
+                        <textarea name="description" id="categoryEditDescription" class="form-control" rows="3"
+                            placeholder="Optional description"></textarea>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="status" id="categoryEditStatus" checked>
+                        <label class="form-check-label" for="categoryEditStatus">Active</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="categoryEditSaveBtn">
+                        <i class="bi bi-check2-circle me-1"></i> Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        async function getCategoryInfo(id) {
+            let URL = '{{ url('/api/v1/categories') }}/' + id;
+            let token = localStorage.getItem('token');
+
+            try {
+                let response = await axios.get(URL, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+                let data = response.data['data'];
+                if (data) {
+                    document.getElementById('categoryEditId').value = data['id'] || id;
+                    document.getElementById('categoryEditName').value = data['name'] || '';
+                    document.getElementById('categoryEditDescription').value = data['description'] || '';
+                    document.getElementById('categoryEditStatus').checked = data['status'];
+                }
+            } catch (err) {
+                showErrorToast(getErrorMessage(err, 'Failed to load category.'));
+            }
+        }
+
+        async function editCategory(id) {
+            document.getElementById('categoryEditId').value = id;
+            await getCategoryInfo(id);
+            let modalEl = document.getElementById('categoryEditModal');
+            let modal = new bootstrap.Modal(modalEl);
+            modal.show();
+
+        }
+
+        async function doEditCategory() {
+            let id = document.getElementById('categoryEditId').value.trim();
+            let nameValue = document.getElementById('categoryEditName').value.trim();
+            let descriptionValue = document.getElementById('categoryEditDescription').value.trim();
+            let statusChecked = document.getElementById('categoryEditStatus').checked;
+            let saveBtn = document.getElementById('categoryEditSaveBtn');
+
+            let obj = {
+                name: nameValue,
+                description: descriptionValue || null,
+                status: statusChecked
+            };
+
+            let URL = '{{ url('/api/v1/categories') }}' + '/' + id;
+            let token = localStorage.getItem('token');
+
+            saveBtn.disabled = true;
+
+            try {
+                let response = await axios.put(URL, obj, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+
+                if (response.data && response.data.success) {
+                    showSuccessToast(response.data.message || 'Category updated successfully.');
+                    let modalEl = document.getElementById('categoryEditModal');
+                    let modal = window.bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    document.getElementById('categoryEditForm').reset();
+                    document.getElementById('categoryEditId').value = '';
+                    document.getElementById('categoryEditStatus').checked = true;
+                    if (typeof getCategories === 'function') getCategories();
+                } else {
+                    showErrorToast(getErrorMessage(null, 'Failed to update category.'));
+                }
+            } catch (err) {
+                showErrorToast(getErrorMessage(err, 'Failed to update category. Please try again.'));
+            } finally {
+                saveBtn.disabled = false;
+            }
+        }
+
+        document.getElementById('categoryEditForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await doEditCategory();
+        });
+    </script>
+@endpush
+
+
+
+
+2. C. iv) Create Blade delete.blade.php 
+Edit resources>views>admin>categories>delete.blade.php:
+------------------------------------------------------
+<div class="modal fade" id="categoryDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="categoryDeleteId" value="">
+                <p class="mb-0">Are you sure you want to delete this category?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="categoryDeleteBtn" onclick="doDeleteCategory()">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        function deleteCategory(id) {
+            document.getElementById('categoryDeleteId').value = id;
+            let modalEl = document.getElementById('categoryDeleteModal');
+            let modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+
+        async function doDeleteCategory() {
+            let id = document.getElementById('categoryDeleteId').value.trim();
+            let deleteBtn = document.getElementById('categoryDeleteBtn');
+
+            let URL = '{{ url('/api/v1/categories') }}/' + id;
+            let token = localStorage.getItem('token');
+
+            deleteBtn.disabled = true;
+
+            try {
+                let response = await axios.delete(URL, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+
+                if (response.data && response.data.success) {
+                    showSuccessToast(response.data.message || 'Category deleted successfully.');
+                    let modalEl = document.getElementById('categoryDeleteModal');
+                    let modal = window.bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    document.getElementById('categoryDeleteId').value = '';
+                    if (typeof getCategories === 'function') getCategories();
+                } else {
+                    showErrorToast(getErrorMessage(null, 'Failed to delete category.'));
+                }
+            } catch (err) {
+                showErrorToast(getErrorMessage(err, 'Failed to delete category. Please try again.'));
+            } finally {
+                deleteBtn.disabled = false;
+            }
+        }
+    </script>
+@endpush
 
 
 
