@@ -3322,7 +3322,9 @@ Edit resources>views>admin>products>delete.blade.php:
                     let modal = window.bootstrap.Modal.getInstance(modalEl);
                     if (modal) modal.hide();
                     document.getElementById('stockInForm').reset();
+                    // update list show
                     if (typeof getStocks === 'function') getStocks();
+                    if (typeof loadProductsForStock === 'function') loadProductsForStock()
                 } else {
                     showErrorToast(getErrorMessage(null, 'Failed to create stock IN.'));
                 }
@@ -3431,7 +3433,9 @@ Edit resources>views>admin>products>delete.blade.php:
                     if (modal) modal.hide();
                     document.getElementById('stockAdjustForm').reset();
                     document.getElementById('stockAdjustType').value = 'OUT';
+                    // Update list show
                     if (typeof getStocks === 'function') getStocks();
+                    if (typeof loadProductsForStock === 'function') loadProductsForStock()
                 } else {
                     showErrorToast(getErrorMessage(null, 'Failed to create stock adjustment.'));
                 }

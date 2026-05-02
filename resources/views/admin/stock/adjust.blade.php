@@ -84,7 +84,10 @@
                     if (modal) modal.hide();
                     document.getElementById('stockAdjustForm').reset();
                     document.getElementById('stockAdjustType').value = 'OUT';
+
+                    // Update list show
                     if (typeof getStocks === 'function') getStocks();
+                    if (typeof loadProductsForStock === 'function') loadProductsForStock()
                 } else {
                     showErrorToast(getErrorMessage(null, 'Failed to create stock adjustment.'));
                 }
