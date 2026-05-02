@@ -1,5 +1,7 @@
 @extends('layouts.admin')
+
 @section('title', 'Stocks')
+
 @section('content')
     <div class="row g-4 mb-4">
         <div class="col-md-6">
@@ -55,7 +57,7 @@
                             <th style="width: 130px;">Date</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="stocksTableBody">
                         <!-- Static demo data (design only) -->
                         <tr>
                             <td>1</td>
@@ -67,53 +69,105 @@
                             <td class="text-muted">—</td>
                             <td class="text-muted">2026-02-01</td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="fw-semibold">Notebook (A5)</td>
-                            <td class="text-muted">Stationery</td>
-                            <td><span class="badge text-bg-danger">OUT</span></td>
-                            <td class="fw-semibold">-2</td>
-                            <td class="text-muted">Damage / correction</td>
-                            <td class="text-muted">—</td>
-                            <td class="text-muted">2026-02-02</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td class="fw-semibold">Premium Rice</td>
-                            <td class="text-muted">Groceries</td>
-                            <td><span class="badge text-bg-danger">OUT</span></td>
-                            <td class="fw-semibold">-5</td>
-                            <td class="text-muted">Sold via POS</td>
-                            <td>
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-receipt me-1"></i>INV-00042
-                                </a>
-                            </td>
-                            <td class="text-muted">2026-02-03</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td class="fw-semibold">iPhone 15 Pro</td>
-                            <td class="text-muted">Electronics</td>
-                            <td><span class="badge text-bg-danger">OUT</span></td>
-                            <td class="fw-semibold">-1</td>
-                            <td class="text-muted">Sold via POS</td>
-                            <td>
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-receipt me-1"></i>INV-00042
-                                </a>
-                            </td>
-                            <td class="text-muted">2026-02-03</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Stock In Modal -->
     @include('admin.stock.stock_in')
-
-    <!-- Stock Adjustment Modal -->
     @include('admin.stock.adjust')
+
+    @push('scripts')
+        <script>
+            getStocks();
+            loadProductsForStock();
+
+            // Get Stock
+            async function getStocks() {
+                let URL = '{{ url('/api/v1/stocks') }}';
+                let token = localStorage.getItem('token');
+                let tbody = document.getElementById('stocksTableBody');
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+                    let stocks = response.data['data'] || [];
+                    tbody.innerHTML = '';
+                    stocks.forEach((item) => {
+                        let created = item['created_at'] ? item['created_at'].substring(0, 10) : '-';
+                        let productName = item['product'] && item['product']['product_name'] ? item['product'][
+                            'product_name'
+                        ] : '-';
+                        let categoryName = item['product'] && item['product']['category'] && item['product'][
+                            'category'
+                        ]['name'] ? item['product']['category']['name'] : '-';
+                        let typeBadge = item['type'] === 'IN' ? '<span class="badge text-bg-success">IN</span>' :
+                            '<span class="badge text-bg-danger">OUT</span>';
+                        let qty = item['quantity'] || 0;
+                        let qtyDisplay = item['type'] === 'IN' ? '+' + qty : '-' + qty;
+                        let invoiceDisplay = item['invoice_id'] ? '<span class="text-muted">INV-' + item[
+                            'invoice_id'] + '</span>' : '<span class="text-muted">—</span>';
+                        tbody.innerHTML += (`
+                    <tr>
+                        <td>${item['id']}</td>
+                        <td class="fw-semibold">${productName}</td>
+                        <td class="text-muted">${categoryName}</td>
+                        <td>${typeBadge}</td>
+                        <td class="fw-semibold">${qtyDisplay}</td>
+                        <td class="text-muted">${item['note'] || '—'}</td>
+                        <td>${invoiceDisplay}</td>
+                        <td class="text-muted">${created}</td>
+                    </tr>
+                `);
+                    });
+                } catch (err) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="8" class="text-center text-muted py-4">Failed to load stock movements.</td></tr>';
+                    showErrorToast(getErrorMessage(err, 'Failed to load stock movements.'));
+                }
+            }
+            // Get Stock End
+
+
+            // Product Load when selected
+            async function loadProductsForStock() {
+                let URL = '{{ url('/api/v1/products') }}';
+                let token = localStorage.getItem('token');
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+                    let products = response.data['data'] || [];
+                    let stockInSelect = document.getElementById('stockInProductId');
+                    let stockAdjustSelect = document.getElementById('stockAdjustProductId');
+                    if (stockInSelect) {
+                        stockInSelect.innerHTML = '<option value="" selected disabled>Select product</option>';
+                        products.forEach((p) => {
+                            let cat = p.category && p.category.name ? p.category.name : '';
+                            let stock = p.stock_qty != null ? p.stock_qty : 0;
+                            stockInSelect.innerHTML += '<option value="' + p.id + '">' + (p.product_name || '') +
+                                ' (' + cat + ') -> Stock: ' + stock + '</option>';
+                        });
+                    }
+                    if (stockAdjustSelect) {
+                        stockAdjustSelect.innerHTML = '<option value="" selected disabled>Select product</option>';
+                        products.forEach((p) => {
+                            let cat = p.category && p.category.name ? p.category.name : '';
+                            let stock = p.stock_qty != null ? p.stock_qty : 0;
+                            stockAdjustSelect.innerHTML += '<option value="' + p.id + '">' + (p.product_name ||
+                                '') + ' (' + cat + ') -> Stock: ' + stock + '</option>';
+                        });
+                    }
+                } catch (err) {
+                    showErrorToast(getErrorMessage(err, 'Failed to load products.'));
+                }
+            }
+            // Product load when selected end
+        </script>
+    @endpush
 @endsection
