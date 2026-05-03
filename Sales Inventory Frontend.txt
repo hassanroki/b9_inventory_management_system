@@ -1052,11 +1052,21 @@ Edit resources>views>admin>pos>index.blade.php:
             <!-- Search -->
             <div class="card mb-3">
                 <div class="card-body py-3">
-                    <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Search product by name or SKU..."
-                            id="posSearch">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search product by name or SKU..."
+                                    id="searchInput">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" name="categoryFilter" id="">
+                                <option value="">All categories</option>
+                            </select>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -1085,129 +1095,6 @@ Edit resources>views>admin>pos>index.blade.php:
                             </div>
                         </div>
 
-                        <!-- Product 2: In stock -->
-                        <div class="col-6 col-md-4 col-xl-3">
-                            <div class="card pos-product-card h-100">
-                                <div class="product-image">
-                                    <i class="bi bi-laptop"></i>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="fw-semibold small text-truncate" title="MacBook Pro 14">MacBook Pro 14"
-                                    </div>
-                                    <div class="text-muted small">APL-MBP14-512</div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="fw-bold text-primary">$ 1,999.00</span>
-                                        <span class="badge text-bg-success">15</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 3: Low stock -->
-                        <div class="col-6 col-md-4 col-xl-3">
-                            <div class="card pos-product-card h-100">
-                                <div class="product-image">
-                                    <i class="bi bi-journal-text"></i>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="fw-semibold small text-truncate" title="Notebook (A5)">Notebook (A5)</div>
-                                    <div class="text-muted small">ST-NB-A5-001</div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="fw-bold text-primary">$ 2.50</span>
-                                        <span class="badge text-bg-warning">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 4: Out of stock -->
-                        <div class="col-6 col-md-4 col-xl-3">
-                            <div class="card pos-product-card h-100 out-of-stock">
-                                <div class="product-image">
-                                    <i class="bi bi-basket3"></i>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="fw-semibold small text-truncate" title="Premium Rice">Premium Rice (5kg)
-                                    </div>
-                                    <div class="text-muted small">GR-RICE-5KG</div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="fw-bold text-primary">$ 12.99</span>
-                                        <span class="badge text-bg-secondary">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 5 -->
-                        <div class="col-6 col-md-4 col-xl-3">
-                            <div class="card pos-product-card h-100">
-                                <div class="product-image">
-                                    <i class="bi bi-headphones"></i>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="fw-semibold small text-truncate" title="AirPods Pro">AirPods Pro</div>
-                                    <div class="text-muted small">APL-APP-002</div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="fw-bold text-primary">$ 249.00</span>
-                                        <span class="badge text-bg-success">28</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 6 -->
-                        <div class="col-6 col-md-4 col-xl-3">
-                            <div class="card pos-product-card h-100">
-                                <div class="product-image">
-                                    <i class="bi bi-pen"></i>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="fw-semibold small text-truncate" title="Ball Pen (Pack of 10)">Ball Pen
-                                        (Pack of 10)</div>
-                                    <div class="text-muted small">ST-PEN-10PK</div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="fw-bold text-primary">$ 5.00</span>
-                                        <span class="badge text-bg-success">120</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 7 -->
-                        <div class="col-6 col-md-4 col-xl-3">
-                            <div class="card pos-product-card h-100">
-                                <div class="product-image">
-                                    <i class="bi bi-cup-hot"></i>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="fw-semibold small text-truncate" title="Green Tea (Box)">Green Tea (Box)
-                                    </div>
-                                    <div class="text-muted small">GR-TEA-GRN</div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="fw-bold text-primary">$ 8.50</span>
-                                        <span class="badge text-bg-success">45</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product 8 -->
-                        <div class="col-6 col-md-4 col-xl-3">
-                            <div class="card pos-product-card h-100">
-                                <div class="product-image">
-                                    <i class="bi bi-mouse"></i>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="fw-semibold small text-truncate" title="Wireless Mouse">Wireless Mouse
-                                    </div>
-                                    <div class="text-muted small">EL-MOUSE-WL</div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="fw-bold text-primary">$ 29.99</span>
-                                        <span class="badge text-bg-success">67</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -3466,7 +3353,8 @@ Edit resources>views>admin>products>delete.blade.php:
 
 
 
-
+03. B) POS Invoice:
+-------------------
 
 
 
