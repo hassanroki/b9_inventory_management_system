@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\DashBoardController;
 use App\Http\Controllers\Api\V1\InvoiceController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\StockController;
@@ -51,5 +52,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
         Route::put('/invoices/{id}', [InvoiceController::class, 'update']);
         Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy']);
+
+        // Dashboard Summary
+        Route::get('/dashboard/summary', [DashBoardController::class, 'summary']);
     });
 });
