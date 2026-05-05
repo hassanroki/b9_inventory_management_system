@@ -12,7 +12,7 @@
                         </div>
                         <div>
                             <div class="text-muted small">Total Invoices</div>
-                            <div class="fs-4 fw-semibold">42</div>
+                            <div id="totalInvoices" class="fs-4 fw-semibold">0</div>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         </div>
                         <div>
                             <div class="text-muted small">Finalized</div>
-                            <div class="fs-4 fw-semibold">38</div>
+                            <div id="finalizedInvoices" class="fs-4 fw-semibold">0</div>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                         </div>
                         <div>
                             <div class="text-muted small">Draft</div>
-                            <div class="fs-4 fw-semibold">3</div>
+                            <div id="draftInvoices" class="fs-4 fw-semibold">0</div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                         </div>
                         <div>
                             <div class="text-muted small">Total Revenue</div>
-                            <div class="fs-4 fw-semibold">$ 12,845.50</div>
+                            <div id="totalRevenue" class="fs-4 fw-semibold">$ 0.00</div>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <span>Invoice List</span>
-            <a href="pos.html" class="btn btn-sm btn-primary">
+            <a href="{{ route('pos') }}" class="btn btn-sm btn-primary">
                 <i class="bi bi-plus-lg me-1"></i> New Invoice (POS)
             </a>
         </div>
@@ -88,194 +88,214 @@
                             <th class="text-end" style="width: 180px;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Static demo data (design only) -->
+                    <tbody id="invoicesTableBody">
 
-                        <!-- Finalized invoice -->
-                        <tr>
-                            <td>42</td>
-                            <td>
-                                <span class="fw-semibold text-primary">INV-202602-0042</span>
-                            </td>
-                            <td class="text-muted">2026-02-04</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">3</span>
-                            </td>
-                            <td>$ 1,350.00</td>
-                            <td>
-                                <span class="text-danger">- $ 50.00</span>
-                                <div class="text-muted small">Fixed</div>
-                            </td>
-                            <td class="fw-semibold text-success">$ 1,300.00</td>
-                            <td>
-                                <span class="badge text-bg-success">
-                                    <i class="bi bi-check-circle me-1"></i>Finalized
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled
-                                    title="Cannot edit finalized">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled
-                                    title="Cannot delete finalized">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- Draft invoice -->
-                        <tr>
-                            <td>41</td>
-                            <td>
-                                <span class="fw-semibold text-primary">INV-202602-0041</span>
-                            </td>
-                            <td class="text-muted">2026-02-03</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">2</span>
-                            </td>
-                            <td>$ 520.00</td>
-                            <td>
-                                <span class="text-danger">- $ 26.00</span>
-                                <div class="text-muted small">5%</div>
-                            </td>
-                            <td class="fw-semibold">$ 494.00</td>
-                            <td>
-                                <span class="badge text-bg-warning">
-                                    <i class="bi bi-pencil-square me-1"></i>Draft
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- Cancelled invoice -->
-                        <tr class="table-light">
-                            <td class="text-muted">40</td>
-                            <td>
-                                <span class="fw-semibold text-muted text-decoration-line-through">INV-202602-0040</span>
-                            </td>
-                            <td class="text-muted">2026-02-02</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">1</span>
-                            </td>
-                            <td class="text-muted">$ 150.00</td>
-                            <td class="text-muted">—</td>
-                            <td class="text-muted">$ 150.00</td>
-                            <td>
-                                <span class="badge text-bg-secondary">
-                                    <i class="bi bi-x-circle me-1"></i>Cancelled
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- More finalized invoices -->
-                        <tr>
-                            <td>39</td>
-                            <td>
-                                <span class="fw-semibold text-primary">INV-202602-0039</span>
-                            </td>
-                            <td class="text-muted">2026-02-01</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">5</span>
-                            </td>
-                            <td>$ 2,100.00</td>
-                            <td>
-                                <span class="text-danger">- $ 210.00</span>
-                                <div class="text-muted small">10%</div>
-                            </td>
-                            <td class="fw-semibold text-success">$ 1,890.00</td>
-                            <td>
-                                <span class="badge text-bg-success">
-                                    <i class="bi bi-check-circle me-1"></i>Finalized
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled
-                                    title="Cannot edit finalized">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled
-                                    title="Cannot delete finalized">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>38</td>
-                            <td>
-                                <span class="fw-semibold text-primary">INV-202601-0038</span>
-                            </td>
-                            <td class="text-muted">2026-01-30</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">1</span>
-                            </td>
-                            <td>$ 1,299.00</td>
-                            <td class="text-muted">—</td>
-                            <td class="fw-semibold text-success">$ 1,299.00</td>
-                            <td>
-                                <span class="badge text-bg-success">
-                                    <i class="bi bi-check-circle me-1"></i>Finalized
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled
-                                    title="Cannot edit finalized">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled
-                                    title="Cannot delete finalized">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination placeholder -->
-            <nav class="d-flex justify-content-between align-items-center mt-3">
-                <div class="text-muted small">Showing 1 to 5 of 42 invoices</div>
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <div id="paginationWrapper"></div>
         </div>
     </div>
+    {{-- View Invoice, Delete, Finalize --}}
+    @include('admin.invoices.show')
+    @include('admin.invoices.delete')
+    @include('admin.invoices.finalize')
+
+    @push('scripts')
+        <script>
+            let invoicesData = [];
+            let currentPage = 1;
+            getInvoices();
+
+
+            async function getInvoices(page = 1) {
+                currentPage = page;
+                // let URL = '{{ url('/api/v1/invoices') }}';
+                // Pagination
+                let URL = `{{ url('/api/v1/invoices') }}?page=${page}`;
+
+                let token = localStorage.getItem('token');
+                let tbody = document.getElementById('invoicesTableBody');
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+                    // invoicesData = response.data['data'] || [];
+                    let apiData = response.data.data;
+                    invoicesData = apiData.data || [];
+
+                    tbody.innerHTML = '';
+                    if (invoicesData.length === 0) {
+                        tbody.innerHTML =
+                            '<tr><td colspan="9" class="text-center text-muted py-4">No invoices found.</td></tr>';
+                        return;
+                    }
+                    invoicesData.forEach((item) => {
+                        let invoiceDate = item['invoice_date'] ? item['invoice_date'].substring(0, 10) : '-';
+                        let itemsCount = item['items'] ? item['items'].length : 0;
+                        let subtotal = parseFloat(item['subtotal'] || 0).toFixed(2);
+                        let discountAmount = parseFloat(item['discount_amount'] || 0);
+                        let grandTotal = parseFloat(item['grand_total'] || 0).toFixed(2);
+                        let status = item['status'] || 'draft';
+
+                        let discountHtml = '—';
+                        if (discountAmount > 0) {
+                            let discountLabel = '';
+                            if (item['discount_type'] === 'percent') {
+                                discountLabel = parseFloat(item['discount_value'] || 0) + '%';
+                            } else if (item['discount_type'] === 'fixed') {
+                                discountLabel = 'Fixed';
+                            }
+                            discountHtml = '<span class="text-danger">- $ ' + discountAmount.toFixed(2) + '</span>';
+                            if (discountLabel) {
+                                discountHtml += '<div class="text-muted small">' + discountLabel + '</div>';
+                            }
+                        }
+
+                        let statusBadge = '';
+                        let grandTotalClass = 'fw-semibold';
+                        let rowClass = '';
+                        let isCancelled = false;
+                        let isFinalized = false;
+
+                        if (status === 'finalized') {
+                            statusBadge =
+                                '<span class="badge text-bg-success"><i class="bi bi-check-circle me-1"></i>Finalized</span>';
+                            grandTotalClass = 'fw-semibold text-success';
+                            isFinalized = true;
+                        } else if (status === 'cancelled') {
+                            statusBadge =
+                                '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelled</span>';
+                            rowClass = 'class="table-light"';
+                            isCancelled = true;
+                        } else {
+                            statusBadge =
+                                '<span class="badge text-bg-warning"><i class="bi bi-pencil-square me-1"></i>Draft</span>';
+                        }
+
+                        let invoiceNoHtml = isCancelled ?
+                            '<span class="fw-semibold text-muted text-decoration-line-through">' + (item[
+                                'invoice_no'] || '') + '</span>' :
+                            '<span class="fw-semibold text-primary">' + (item['invoice_no'] || '') + '</span>';
+
+                        let actionsHtml = `
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="viewInvoice(${item['id']})" title="View">
+                            <i class="bi bi-eye"></i>
+                        </button>`;
+
+                        if (status === 'draft') {
+                            actionsHtml += `
+                        <button type="button" class="btn btn-sm btn-outline-success" onclick="finalizeInvoice(${item['id']})" title="Finalize">
+                            <i class="bi bi-check-lg"></i> Finalize
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteInvoice(${item['id']})" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        } else if (isFinalized) {
+                            actionsHtml += `
+                        <button type="button" class="btn btn-sm btn-outline-danger" disabled title="Cannot delete finalized">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        } else {
+                            actionsHtml += `
+                        <button type="button" class="btn btn-sm btn-outline-danger" disabled>
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        }
+
+                        tbody.innerHTML += `
+                    <tr ${rowClass}>
+                        <td${isCancelled ? ' class="text-muted"' : ''}>${item['id']}</td>
+                        <td>${invoiceNoHtml}</td>
+                        <td class="text-muted">${invoiceDate}</td>
+                        <td><span class="badge bg-secondary rounded-pill">${itemsCount}</span></td>
+                        <td${isCancelled ? ' class="text-muted"' : ''}>$ ${subtotal}</td>
+                        <td${isCancelled ? ' class="text-muted"' : ''}>${discountHtml}</td>
+                        <td class="${grandTotalClass}${isCancelled ? ' text-muted' : ''}">$ ${grandTotal}</td>
+                        <td>${statusBadge}</td>
+                        <td class="text-end">${actionsHtml}</td>
+                    </tr>`;
+                    });
+
+                    // Pagination
+                    renderPagination(apiData);
+
+                    // Summary
+                    summary(apiData);
+
+                } catch (err) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="9" class="text-center text-muted py-4">Failed to load invoices.</td></tr>';
+                    showErrorToast(getErrorMessage(err, 'Failed to load invoices.'));
+                }
+            }
+
+            // Summary
+            function summary(meta) {
+
+                let totalInvoices = meta.total;
+                let finalizedCount = 0;
+                let draftCount = 0;
+                let totalRevenue = 0;
+
+                invoicesData.forEach(item => {
+                    if (item.status === 'finalized') {
+                        finalizedCount++;
+                        totalRevenue += parseFloat(item.grand_total || 0);
+                    } else if (item.status === 'draft') {
+                        draftCount++;
+                    }
+                });
+
+                document.getElementById('totalInvoices').innerText = totalInvoices;
+                document.getElementById('finalizedInvoices').innerText = finalizedCount;
+                document.getElementById('draftInvoices').innerText = draftCount;
+                document.getElementById('totalRevenue').innerText = '$ ' + totalRevenue.toFixed(2);
+            }
+
+
+            // Pagination
+            function renderPagination(meta) {
+
+                let wrapper = document.getElementById('paginationWrapper');
+
+                let html = `<nav class="d-flex justify-content-between align-items-center mt-3">
+    <div class="text-muted small">
+        Showing ${meta.from} to ${meta.to} of ${meta.total} invoices
+    </div>
+    <ul class="pagination pagination-sm mb-0">`;
+
+                // Previous button
+                html += `
+    <li class="page-item ${meta.current_page === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${meta.current_page - 1})">Previous</a>
+    </li>`;
+
+                // Page numbers
+                let start = Math.max(1, meta.current_page - 2);
+                let end = Math.min(meta.last_page, meta.current_page + 2);
+
+                for (let i = start; i <= end; i++) {
+                    html += `
+    <li class="page-item ${i === meta.current_page ? 'active' : ''}">
+        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${i})">${i}</a>
+    </li>`;
+                }
+
+                // Next button
+                html += `
+    <li class="page-item ${meta.current_page === meta.last_page ? 'disabled' : ''}">
+        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${meta.current_page + 1})">Next</a>
+    </li>`;
+
+                html += `</ul></nav>`;
+
+                wrapper.innerHTML = html;
+            }
+        </script>
+    @endpush
 @endsection

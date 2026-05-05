@@ -1045,12 +1045,12 @@ use Throwable;
 class InvoiceController extends Controller
 {
     // Invoice
-    public function index()
+   public function index()
     {
         try {
             $invoices = Invoice::with(['items.product.category'])
-                ->orderByDesc('id')
-                ->get();
+                ->latest()
+                ->paginate(30);
 
             return response()->json([
                 'success' => true,

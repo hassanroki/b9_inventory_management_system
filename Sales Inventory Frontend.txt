@@ -1110,29 +1110,7 @@ Edit resources>views>admin>pos>index.blade.php:
                 <div class="card-body p-0">
                     <!-- Cart Items -->
                     <div class="p-3" style="max-height: 320px; overflow-y: auto;">
-                        <!-- Cart item 1 -->
-                        <div class="pos-cart-item">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div class="flex-grow-1 me-2">
-                                    <div class="fw-semibold">iPhone 15 Pro</div>
-                                    <div class="text-muted small">$ 1,299.00 × 1</div>
-                                </div>
-                                <button type="button" class="btn btn-sm btn-outline-danger p-1 lh-1">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="input-group input-group-sm" style="width: 100px;">
-                                    <button class="btn btn-outline-secondary" type="button">−</button>
-                                    <input type="number" class="form-control text-center px-1" value="1"
-                                        min="1">
-                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                </div>
-                                <div class="flex-grow-1 text-end fw-semibold">$ 1,299.00</div>
-                            </div>
-                        </div>
-
-                        <!-- Cart item 2 with item discount -->
+                                                <!-- Cart item 2 with item discount -->
                         <div class="pos-cart-item">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div class="flex-grow-1 me-2">
@@ -1166,29 +1144,7 @@ Edit resources>views>admin>pos>index.blade.php:
                             </div>
                         </div>
 
-                        <!-- Cart item 3 -->
-                        <div class="pos-cart-item">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div class="flex-grow-1 me-2">
-                                    <div class="fw-semibold">Notebook (A5)</div>
-                                    <div class="text-muted small">$ 2.50 × 3</div>
-                                </div>
-                                <button type="button" class="btn btn-sm btn-outline-danger p-1 lh-1">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="input-group input-group-sm" style="width: 100px;">
-                                    <button class="btn btn-outline-secondary" type="button">−</button>
-                                    <input type="number" class="form-control text-center px-1" value="3"
-                                        min="1">
-                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                </div>
-                                <div class="flex-grow-1 text-end fw-semibold">$ 7.50</div>
-                            </div>
-                        </div>
-                    </div>
-
+                        
                     <!-- Totals -->
                     <div class="border-top p-3 bg-light">
                         <!-- Subtotal -->
@@ -1407,138 +1363,6 @@ Edit resources>views>admin>invoices>index.blade.php:
                             </td>
                         </tr>
 
-                        <!-- Draft invoice -->
-                        <tr>
-                            <td>41</td>
-                            <td>
-                                <span class="fw-semibold text-primary">INV-202602-0041</span>
-                            </td>
-                            <td class="text-muted">2026-02-03</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">2</span>
-                            </td>
-                            <td>$ 520.00</td>
-                            <td>
-                                <span class="text-danger">- $ 26.00</span>
-                                <div class="text-muted small">5%</div>
-                            </td>
-                            <td class="fw-semibold">$ 494.00</td>
-                            <td>
-                                <span class="badge text-bg-warning">
-                                    <i class="bi bi-pencil-square me-1"></i>Draft
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- Cancelled invoice -->
-                        <tr class="table-light">
-                            <td class="text-muted">40</td>
-                            <td>
-                                <span class="fw-semibold text-muted text-decoration-line-through">INV-202602-0040</span>
-                            </td>
-                            <td class="text-muted">2026-02-02</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">1</span>
-                            </td>
-                            <td class="text-muted">$ 150.00</td>
-                            <td class="text-muted">—</td>
-                            <td class="text-muted">$ 150.00</td>
-                            <td>
-                                <span class="badge text-bg-secondary">
-                                    <i class="bi bi-x-circle me-1"></i>Cancelled
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled>
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- More finalized invoices -->
-                        <tr>
-                            <td>39</td>
-                            <td>
-                                <span class="fw-semibold text-primary">INV-202602-0039</span>
-                            </td>
-                            <td class="text-muted">2026-02-01</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">5</span>
-                            </td>
-                            <td>$ 2,100.00</td>
-                            <td>
-                                <span class="text-danger">- $ 210.00</span>
-                                <div class="text-muted small">10%</div>
-                            </td>
-                            <td class="fw-semibold text-success">$ 1,890.00</td>
-                            <td>
-                                <span class="badge text-bg-success">
-                                    <i class="bi bi-check-circle me-1"></i>Finalized
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled
-                                    title="Cannot edit finalized">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled
-                                    title="Cannot delete finalized">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>38</td>
-                            <td>
-                                <span class="fw-semibold text-primary">INV-202601-0038</span>
-                            </td>
-                            <td class="text-muted">2026-01-30</td>
-                            <td>
-                                <span class="badge bg-secondary rounded-pill">1</span>
-                            </td>
-                            <td>$ 1,299.00</td>
-                            <td class="text-muted">—</td>
-                            <td class="fw-semibold text-success">$ 1,299.00</td>
-                            <td>
-                                <span class="badge text-bg-success">
-                                    <i class="bi bi-check-circle me-1"></i>Finalized
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-primary" title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary" disabled
-                                    title="Cannot edit finalized">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger" disabled
-                                    title="Cannot delete finalized">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -1559,6 +1383,7 @@ Edit resources>views>admin>invoices>index.blade.php:
         </div>
     </div>
 @endsection
+
 
 
 
@@ -3355,6 +3180,606 @@ Edit resources>views>admin>products>delete.blade.php:
 
 03. B) POS Invoice:
 -------------------
+Edit resources>views>admin>pos>index.blade.php:
+------------------------------------------------
+@extends('layouts.admin')
+@section('title', 'POST')
+@section('content')
+    <div class="row g-4">
+        <!-- Left: Products -->
+        <div class="col-lg-8">
+            <!-- Search -->
+            <div class="card mb-3">
+                <div class="card-body py-3">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search product by name or SKU..."
+                                    id="searchInput">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="categoryFilter">
+                                <option value="">All categories</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-grid me-2"></i>Products</span>
+                    <span class="text-muted small">Click to add to cart</span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3" id="productGrid">
+                        <div class="col-12 text-center text-muted py-4">Loading products...</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Cart -->
+        <div class="col-lg-4">
+            <div class="card cart-sticky">
+                <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+                    <span><i class="bi bi-cart3 me-2"></i>Cart</span>
+                    <span class="badge bg-white text-primary" id="cartBadge">0 items</span>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Cart Items -->
+                    <div class="p-3" style="max-height: 320px; overflow-y: auto;" id="cartItemsContainer">
+                        <div class="text-center text-muted py-4">Cart is empty</div>
+
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="border-top p-3 bg-light" id="totalsSection" style="display: none">
+                        <!-- Subtotal -->
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span id="subtotalDisplay">$ 0.00</span>
+                        </div>
+
+                        <!-- Item discounts total -->
+                        <div class="d-flex justify-content-between mb-2 text-danger" id="itemDiscountRow"
+                            style="display: none">
+                            <span>Item Discounts</span>
+                            <span id="itemDiscountDisplay">- $ 0.00</span>
+                        </div>
+
+                        <!-- Invoice discount -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted">Invoice Discount</span>
+                            <div class="d-flex align-items-center gap-1">
+                                <select class="form-select form-select-sm" id="invoiceDiscountType" style="width: 65px;">
+                                    <option value="">None</option>
+                                    <option value="fixed" selected>$</option>
+                                    <option value="percent">%</option>
+                                </select>
+                                <input type="number" class="form-control form-control-sm" id="invoiceDiscountValue"
+                                    style="width: 70px;" value="0" min="0">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-danger" id="invoiceDiscountRow"
+                            style="display: none">
+                            <span></span>
+                            <span id="invoiceDiscountDisplay">- $ 0.00</span>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <!-- Grand Total -->
+                        <div class="d-flex justify-content-between fs-5 fw-bold">
+                            <span>Grand Total</span>
+                            <span class="text-success" id="grandTotalDisplay">$ 0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Info & Actions -->
+                    <div class="border-top p-3">
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small text-muted mb-1">Invoice No</label>
+                                <input type="text" class="form-control form-control-sm" id="invoiceNoInput"
+                                    value="" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small text-muted mb-1">Date</label>
+                                <input type="date" class="form-control form-control-sm" id="invoiceDateInput">
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-success btn-lg" id="finalizeBtn" disabled>
+                                <i class="bi bi-check-circle me-2"></i>Finalize Invoice
+                            </button>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-primary w-100" id="saveDraftBtn" disabled>
+                                        <i class="bi bi-save me-1"></i>Save Draft
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100" id="clearCartBtn">
+                                        <i class="bi bi-x-lg me-1"></i>Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            // API URLS
+            let productsUrl = '{{ url('/api/v1/products') }}';
+            let categoriesUrl = '{{ url('/api/v1/categories') }}';
+            let invoicesUrl = '{{ url('/api/v1/invoices') }}';
+
+            // Data holders or State
+            let allProducts = [];
+            let allCategories = [];
+            let cart = [];
+
+            // Helper functions
+            function getToken() {
+                return localStorage.getItem('token') || '';
+            }
+
+            function authHeaders() {
+                return {
+                    headers: {
+                        Authorization: 'Bearer ' + getToken()
+                    }
+                };
+            }
+
+            function formatMoney(amount) {
+                return '$ ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+
+            function todayDate() {
+                let d = new Date();
+                let y = d.getFullYear();
+                let m = String(d.getMonth() + 1).padStart(2, '0');
+                let day = String(d.getDate()).padStart(2, '0');
+                return y + '-' + m + '-' + day;
+            }
+
+            function escapeHtml(text) {
+                let div = document.createElement('div');
+                div.textContent = text == null ? '' : text;
+                return div.innerHTML;
+            }
+
+            // ─── Load Categories ────────────────────────────────────────
+            async function loadCategories() {
+                try {
+                    let response = await axios.get(categoriesUrl, authHeaders());
+                    allCategories = response.data['data'] || [];
+                    let select = document.getElementById('categoryFilter');
+                    select.innerHTML = '<option value="">All categories</option>';
+                    allCategories.forEach(function(category) {
+                        select.innerHTML += '<option value="' + category.id + '">' + escapeHtml(category.name) +
+                            '</option>';
+                    });
+                } catch (err) {
+                    showErrorToast(getErrorMessage(err, 'Failed to load categories.'));
+                }
+            }
+
+            loadCategories();
+
+            //Load products and render grid
+            async function loadProducts() {
+                let grid = document.getElementById('productGrid');
+                try {
+                    let response = await axios.get(productsUrl, authHeaders());
+                    allProducts = response.data['data'] || [];
+                    renderProducts();
+                } catch (err) {
+                    grid.innerHTML = '<div class="col-12 text-center text-muted py-4">Failed to load products.</div>';
+                    showErrorToast(getErrorMessage(err, 'Failed to load products.'));
+                }
+            }
+
+            function renderProducts() {
+                let searchText = (document.getElementById('searchInput').value || '').toLowerCase();
+                let categoryId = document.getElementById('categoryFilter').value;
+                let grid = document.getElementById('productGrid');
+
+                // Filter products by search and category
+                let filtered = allProducts.filter(function(product) {
+                    let matchesSearch = !searchText ||
+                        (product.product_name || '').toLowerCase().includes(searchText) ||
+                        (product.sku || '').toLowerCase().includes(searchText);
+                    let matchesCategory = !categoryId || String(product.category_id) === String(categoryId);
+                    return matchesSearch && matchesCategory;
+                });
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = '<div class="col-12 text-center text-muted py-4">No products found.</div>';
+                    return;
+                }
+
+                grid.innerHTML = '';
+
+                filtered.forEach(function(product) {
+                    let stockQty = product.stock_qty != null ? parseInt(product.stock_qty) : 0;
+                    let price = product.price != null ? parseFloat(product.price) : 0;
+                    let isOutOfStock = stockQty <= 0;
+                    let categoryName = product.category ? product.category.name : '';
+                    let stockBadgeClass = stockQty <= 0 ? 'text-bg-secondary' : (stockQty <= 5 ? 'text-bg-warning' :
+                        'text-bg-success');
+
+                    let col = document.createElement('div');
+                    col.className = 'col-6 col-md-4 col-xl-3';
+                    col.innerHTML =
+                        '<div class="card pos-product-card h-100' + (isOutOfStock ? ' out-of-stock' : '') +
+                        '" data-product-id="' + product.id + '">' +
+                        '  <div class="product-image"><i class="bi bi-box"></i></div>' +
+                        '  <div class="card-body p-2">' +
+                        '    <div class="fw-semibold small text-truncate" title="' + escapeHtml(product.product_name) +
+                        '">' + escapeHtml(product.product_name) + '</div>' +
+                        '    <div class="text-muted small">' + escapeHtml(product.sku) + '</div>' +
+                        '    <div class="text-muted small">' + escapeHtml(categoryName) + '</div>' +
+                        '    <div class="d-flex justify-content-between align-items-center mt-2">' +
+                        '      <span class="fw-bold text-primary">' + formatMoney(price) + '</span>' +
+                        '      <span class="badge ' + stockBadgeClass + '">' + stockQty + '</span>' +
+                        '    </div>' +
+                        '  </div>' +
+                        '</div>';
+
+                    if (!isOutOfStock) {
+                        col.querySelector('.pos-product-card').addEventListener('click', function() {
+                            addToCart(product);
+                        });
+                    }
+
+                    grid.appendChild(col);
+                });
+            }
+
+            loadProducts();
+
+            // ─── Cart: Add ──────────────────────────────────────────────
+            function addToCart(product) {
+                let stockQty = product.stock_qty != null ? parseInt(product.stock_qty) : 0;
+                if (stockQty <= 0) return;
+
+                let unitPrice = product.price != null ? parseFloat(product.price) : 0;
+                let existingItem = cart.find(function(item) {
+                    return item.product_id === product.id;
+                });
+
+                if (existingItem) {
+                    if (existingItem.quantity >= stockQty) return;
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        product_id: product.id,
+                        product_name: product.product_name || '',
+                        sku: product.sku || '',
+                        unit_price: unitPrice,
+                        quantity: 1,
+                        discount_type: '',
+                        discount_value: 0,
+                        discount_amount: 0,
+                        line_total: unitPrice,
+                        max_stock: stockQty
+                    });
+                }
+
+                recalcCart();
+                renderCart();
+            }
+
+            // ─── Cart: Remove ───────────────────────────────────────────
+            function removeFromCart(productId) {
+                cart = cart.filter(function(item) {
+                    return item.product_id !== productId;
+                });
+
+                // Reset invoice discount if cart becomes empty
+                if (cart.length === 0) {
+                    document.getElementById('invoiceDiscountType').value = '';
+                    document.getElementById('invoiceDiscountValue').value = '0';
+                    document.getElementById('itemDiscountDisplay').value = '0';
+                }
+                recalcCart();
+                renderCart();
+            }
+
+            // ─── Cart: Change Quantity ───────────────────────────────────
+            function changeQuantity(productId, delta) {
+                let item = cart.find(function(x) {
+                    return x.product_id === productId;
+                });
+                if (!item) return;
+
+                let newQty = item.quantity + delta;
+                if (newQty < 1) {
+                    removeFromCart(productId);
+                    return;
+                }
+                if (newQty > item.max_stock) newQty = item.max_stock;
+
+                item.quantity = newQty;
+                recalcCart();
+                renderCart();
+            }
+
+            // ─── Cart: Update Item Discount ─────────────────────────────
+            function updateItemDiscount(productId, discountType, discountValue) {
+                let item = cart.find(function(x) {
+                    return x.product_id === productId;
+                });
+                if (!item) return;
+
+                item.discount_type = discountType || '';
+                item.discount_value = parseFloat(discountValue) || 0;
+                recalcCart();
+                renderCart();
+            }
+
+            // ─── Recalculate Cart ───────────────────────────────────────
+            function recalcCart() {
+                cart.forEach(function(item) {
+                    let lineBeforeDiscount = item.quantity * item.unit_price;
+                    let discountAmount = 0;
+
+                    if (item.discount_type === 'fixed') {
+                        discountAmount = Math.min(item.discount_value, lineBeforeDiscount);
+                        // discountAmount = lineBeforeDiscount - item.discount_value;
+                    } else if (item.discount_type === 'percent') {
+                        discountAmount = lineBeforeDiscount * (item.discount_value / 100);
+                    }
+
+                    item.discount_amount = Math.round(discountAmount * 100) / 100;
+                    item.line_total = Math.round((lineBeforeDiscount - item.discount_amount) * 100) / 100;
+                });
+
+                updateTotals();
+            }
+
+            function getSubtotal() {
+                return cart.reduce(function(sum, item) {
+                    return sum + item.line_total;
+                }, 0);
+            }
+
+            function getItemDiscountsTotal() {
+                return cart.reduce(function(sum, item) {
+                    return sum + item.discount_amount;
+                }, 0);
+            }
+
+            function getInvoiceDiscountAmount() {
+                let type = document.getElementById('invoiceDiscountType').value;
+                let value = parseFloat(document.getElementById('invoiceDiscountValue').value) || 0;
+                let subtotal = getSubtotal();
+
+                if (type === 'fixed') return Math.min(value, subtotal);
+                if (type === 'percent') return Math.round(subtotal * value / 100 * 100) / 100;
+                return 0;
+            }
+
+            // ─── Update Totals Display ──────────────────────────────────
+            function updateTotals() {
+                let subtotal = getSubtotal();
+                let itemDiscountsTotal = getItemDiscountsTotal();
+                let invoiceDiscountAmount = getInvoiceDiscountAmount();
+                let grandTotal = Math.round((subtotal - invoiceDiscountAmount) * 100) / 100;
+
+                document.getElementById('subtotalDisplay').textContent = formatMoney(subtotal);
+                document.getElementById('grandTotalDisplay').textContent = formatMoney(grandTotal);
+
+                // Item discounts row
+                let itemDiscountRow = document.getElementById('itemDiscountRow');
+                if (itemDiscountsTotal > 0) {
+                    itemDiscountRow.style.display = 'flex';
+                    document.getElementById('itemDiscountDisplay').textContent = '- ' + formatMoney(itemDiscountsTotal);
+                } else {
+                    itemDiscountRow.style.display = 'none';
+                }
+
+                // Invoice discount row
+                let invoiceDiscountRow = document.getElementById('invoiceDiscountRow');
+                if (invoiceDiscountAmount > 0) {
+                    invoiceDiscountRow.style.display = 'flex';
+                    document.getElementById('invoiceDiscountDisplay').textContent = '- ' + formatMoney(invoiceDiscountAmount);
+                } else {
+                    invoiceDiscountRow.style.display = 'none';
+                }
+
+                // Cart badge & buttons
+                document.getElementById('cartBadge').textContent = cart.length + ' item' + (cart.length !== 1 ? 's' : '');
+                document.getElementById('totalsSection').style.display = cart.length > 0 ? 'block' : 'none';
+                document.getElementById('finalizeBtn').disabled = cart.length === 0;
+                document.getElementById('saveDraftBtn').disabled = cart.length === 0;
+            }
+
+            // ─── Render Cart ────────────────────────────────────────────
+            function renderCart() {
+                let container = document.getElementById('cartItemsContainer');
+
+                if (cart.length === 0) {
+                    container.innerHTML = '<div class="text-center text-muted py-4">Cart is empty</div>';
+                    updateTotals();
+                    return;
+                }
+
+                let html = '';
+
+                cart.forEach(function(item) {
+                    let hasDiscount = item.discount_type && item.discount_value > 0;
+
+                    html +=
+                        '<div class="pos-cart-item">' +
+                        // Product name + remove button
+                        '<div class="d-flex justify-content-between align-items-start mb-2">' +
+                        '<div class="flex-grow-1 me-2">' +
+                        '<div class="fw-semibold">' + escapeHtml(item.product_name) + '</div>' +
+                        '<div class="text-muted small">' + formatMoney(item.unit_price) + ' × ' + item.quantity +
+                        '</div>' +
+                        '</div>' +
+                        '<button type="button" class="btn btn-sm btn-outline-danger p-1 lh-1" onclick="removeFromCart(' +
+                        item.product_id + ')">' +
+                        '<i class="bi bi-x"></i>' +
+                        '</button>' +
+                        '</div>' +
+                        // Quantity controls + line total
+                        '<div class="d-flex align-items-center gap-2">' +
+                        '<div class="input-group input-group-sm" style="width: 100px;">' +
+                        '<button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(' + item
+                        .product_id + ', -1)">−</button>' +
+                        '<input type="number" class="form-control text-center px-1" value="' + item.quantity +
+                        '" min="1" max="' + item.max_stock + '" onchange="setQuantity(' + item.product_id +
+                        ', this.value)">' +
+                        '<button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(' + item
+                        .product_id + ', 1)">+</button>' +
+                        '</div>' +
+                        '<div class="flex-grow-1 text-end fw-semibold">' + formatMoney(item.line_total) + '</div>' +
+                        '</div>' +
+                        // Item discount
+                        '<div class="d-flex align-items-center gap-2 bg-light rounded p-2 mt-2">' +
+                        '<span class="small text-muted">Discount:</span>' +
+                        '<select class="form-select form-select-sm" style="width: 80px;" onchange="updateItemDiscount(' +
+                        item.product_id + ', this.value, this.parentElement.querySelector(\'input\').value)">' +
+                        '<option value="">None</option>' +
+                        '<option value="fixed"' + (item.discount_type === 'fixed' ? ' selected' : '') + '>$</option>' +
+                        '<option value="percent"' + (item.discount_type === 'percent' ? ' selected' : '') +
+                        '>%</option>' +
+                        '</select>' +
+                        '<input type="number" class="form-control form-control-sm" style="width: 60px;" value="' + item
+                        .discount_value + '" min="0" step="0.01" oninput="updateItemDiscount(' + item.product_id +
+                        ', this.parentElement.querySelector(\'select\').value, this.value)">' +
+                        '<span class="small text-danger">-' + formatMoney(item.discount_amount) + '</span>' +
+                        '</div>' +
+                        '</div>';
+                });
+
+                container.innerHTML = html;
+                updateTotals();
+            }
+
+            // ─── Reset Cart ─────────────────────────────────────────────
+            function resetCart() {
+                cart = [];
+                document.getElementById('invoiceNoInput').value = '';
+                document.getElementById('invoiceDateInput').value = todayDate();
+                document.getElementById('invoiceDiscountType').value = '';
+                document.getElementById('invoiceDiscountValue').value = '0';
+                renderCart();
+            }
+
+            // ─── Build Payload for API ──────────────────────────────────
+            function buildInvoicePayload(status) {
+                let subtotal = getSubtotal();
+                let discountType = document.getElementById('invoiceDiscountType').value;
+                let discountValue = parseFloat(document.getElementById('invoiceDiscountValue').value) || 0;
+                let discountAmount = getInvoiceDiscountAmount();
+                let grandTotal = Math.round((subtotal - discountAmount) * 100) / 100;
+                let invoiceDate = document.getElementById('invoiceDateInput').value;
+                let invoiceNo = document.getElementById('invoiceNoInput').value || null;
+
+                let items = cart.map(function(item) {
+                    return {
+                        product_id: item.product_id,
+                        quantity: item.quantity,
+                        unit_price: item.unit_price,
+                        discount_type: item.discount_type || null,
+                        discount_value: item.discount_value,
+                        discount_amount: item.discount_amount,
+                        line_total: item.line_total
+                    };
+                });
+
+                return {
+                    invoice_no: invoiceNo,
+                    invoice_date: invoiceDate,
+                    items: items,
+                    subtotal: Math.round(subtotal * 100) / 100,
+                    discount_type: discountType || null,
+                    discount_value: discountValue,
+                    discount_amount: Math.round(discountAmount * 100) / 100,
+                    grand_total: grandTotal,
+                    status: status
+                };
+            }
+
+            // ─── Submit Invoice ─────────────────────────────────────────
+            async function submitInvoice(status) {
+                if (cart.length === 0) {
+                    showErrorToast('Cart is empty.');
+                    return;
+                }
+
+                let payload = buildInvoicePayload(status);
+
+                if (!payload.invoice_date) {
+                    showErrorToast('Please set the invoice date.');
+                    return;
+                }
+
+                let btn = (status === 'finalized') ? document.getElementById('finalizeBtn') : document.getElementById(
+                    'saveDraftBtn');
+                let originalHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Saving...';
+
+                try {
+                    let response = await axios.post(invoicesUrl, payload, authHeaders());
+
+                    if (response.data.success) {
+                        showSuccessToast(response.data.message || 'Invoice saved successfully.');
+                        resetCart();
+                    } else {
+                        showErrorToast(response.data.message || 'Failed to save invoice.');
+                    }
+                } catch (err) {
+                    showErrorToast(getErrorMessage(err, 'Failed to save invoice.'));
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            }
+
+
+
+            // ─── Event Listeners ────────────────────────────────────────
+            document.getElementById('searchInput').addEventListener('input', renderProducts);
+            document.getElementById('categoryFilter').addEventListener('change', renderProducts);
+            document.getElementById('invoiceDiscountType').addEventListener('change', function() {
+                recalcCart();
+                renderCart();
+            });
+            document.getElementById('invoiceDiscountValue').addEventListener('input', function() {
+                recalcCart();
+                renderCart();
+            });
+            document.getElementById('clearCartBtn').addEventListener('click', function() {
+                resetCart();
+                showSuccessToast('Cart cleared.');
+            });
+
+            document.getElementById('finalizeBtn').addEventListener('click', function() {
+                submitInvoice('finalized');
+            });
+            document.getElementById('saveDraftBtn').addEventListener('click', function() {
+                submitInvoice('draft');
+            });
+        </script>
+    @endpush
+@endsection
 
 
 
@@ -3362,6 +3787,725 @@ Edit resources>views>admin>products>delete.blade.php:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+04. => Invoice List:
+====================
+04. A. i) Invoice list:
+-----------------------
+Edit resources>views>admin>invoices>index.blade.php:
+----------------------------------------------------
+@extends('layouts.admin')
+@section('title', 'Invoices')
+@section('content')
+    <!-- Summary cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="bi bi-receipt text-primary fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Total Invoices</div>
+                            <div id="totalInvoices" class="fs-4 fw-semibold">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 bg-success bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="bi bi-check-circle text-success fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Finalized</div>
+                            <div id="finalizedInvoices" class="fs-4 fw-semibold">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 bg-warning bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="bi bi-pencil-square text-warning fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Draft</div>
+                            <div id="draftInvoices" class="fs-4 fw-semibold">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 bg-info bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="bi bi-currency-dollar text-info fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Total Revenue</div>
+                            <div id="totalRevenue" class="fs-4 fw-semibold">$ 0.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span>Invoice List</span>
+            <a href="{{ route('pos') }}" class="btn btn-sm btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> New Invoice (POS)
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 70px;">#</th>
+                            <th style="width: 160px;">Invoice No</th>
+                            <th style="width: 120px;">Date</th>
+                            <th style="width: 80px;">Items</th>
+                            <th style="width: 120px;">Subtotal</th>
+                            <th style="width: 120px;">Discount</th>
+                            <th style="width: 130px;">Grand Total</th>
+                            <th style="width: 110px;">Status</th>
+                            <th class="text-end" style="width: 180px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoicesTableBody">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination placeholder -->
+            <div id="paginationWrapper"></div>
+        </div>
+    </div>
+    {{-- View Invoice, Delete, Finalize --}}
+    @include('admin.invoices.show')
+    @include('admin.invoices.delete')
+    @include('admin.invoices.finalize')
+
+    @push('scripts')
+        <script>
+            let invoicesData = [];
+            let currentPage = 1;
+            getInvoices();
+
+
+            async function getInvoices(page = 1) {
+                currentPage = page;
+                // let URL = '{{ url('/api/v1/invoices') }}';
+                // Pagination
+                let URL = `{{ url('/api/v1/invoices') }}?page=${page}`;
+
+                let token = localStorage.getItem('token');
+                let tbody = document.getElementById('invoicesTableBody');
+                try {
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
+                    // invoicesData = response.data['data'] || [];
+                    let apiData = response.data.data;
+                    invoicesData = apiData.data || [];
+
+                    tbody.innerHTML = '';
+                    if (invoicesData.length === 0) {
+                        tbody.innerHTML =
+                            '<tr><td colspan="9" class="text-center text-muted py-4">No invoices found.</td></tr>';
+                        return;
+                    }
+                    invoicesData.forEach((item) => {
+                        let invoiceDate = item['invoice_date'] ? item['invoice_date'].substring(0, 10) : '-';
+                        let itemsCount = item['items'] ? item['items'].length : 0;
+                        let subtotal = parseFloat(item['subtotal'] || 0).toFixed(2);
+                        let discountAmount = parseFloat(item['discount_amount'] || 0);
+                        let grandTotal = parseFloat(item['grand_total'] || 0).toFixed(2);
+                        let status = item['status'] || 'draft';
+
+                        let discountHtml = '—';
+                        if (discountAmount > 0) {
+                            let discountLabel = '';
+                            if (item['discount_type'] === 'percent') {
+                                discountLabel = parseFloat(item['discount_value'] || 0) + '%';
+                            } else if (item['discount_type'] === 'fixed') {
+                                discountLabel = 'Fixed';
+                            }
+                            discountHtml = '<span class="text-danger">- $ ' + discountAmount.toFixed(2) + '</span>';
+                            if (discountLabel) {
+                                discountHtml += '<div class="text-muted small">' + discountLabel + '</div>';
+                            }
+                        }
+
+                        let statusBadge = '';
+                        let grandTotalClass = 'fw-semibold';
+                        let rowClass = '';
+                        let isCancelled = false;
+                        let isFinalized = false;
+
+                        if (status === 'finalized') {
+                            statusBadge =
+                                '<span class="badge text-bg-success"><i class="bi bi-check-circle me-1"></i>Finalized</span>';
+                            grandTotalClass = 'fw-semibold text-success';
+                            isFinalized = true;
+                        } else if (status === 'cancelled') {
+                            statusBadge =
+                                '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelled</span>';
+                            rowClass = 'class="table-light"';
+                            isCancelled = true;
+                        } else {
+                            statusBadge =
+                                '<span class="badge text-bg-warning"><i class="bi bi-pencil-square me-1"></i>Draft</span>';
+                        }
+
+                        let invoiceNoHtml = isCancelled ?
+                            '<span class="fw-semibold text-muted text-decoration-line-through">' + (item[
+                                'invoice_no'] || '') + '</span>' :
+                            '<span class="fw-semibold text-primary">' + (item['invoice_no'] || '') + '</span>';
+
+                        let actionsHtml = `
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="viewInvoice(${item['id']})" title="View">
+                            <i class="bi bi-eye"></i>
+                        </button>`;
+
+                        if (status === 'draft') {
+                            actionsHtml += `
+                        <button type="button" class="btn btn-sm btn-outline-success" onclick="finalizeInvoice(${item['id']})" title="Finalize">
+                            <i class="bi bi-check-lg"></i> Finalize
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteInvoice(${item['id']})" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        } else if (isFinalized) {
+                            actionsHtml += `
+                        <button type="button" class="btn btn-sm btn-outline-danger" disabled title="Cannot delete finalized">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        } else {
+                            actionsHtml += `
+                        <button type="button" class="btn btn-sm btn-outline-danger" disabled>
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        }
+
+                        tbody.innerHTML += `
+                    <tr ${rowClass}>
+                        <td${isCancelled ? ' class="text-muted"' : ''}>${item['id']}</td>
+                        <td>${invoiceNoHtml}</td>
+                        <td class="text-muted">${invoiceDate}</td>
+                        <td><span class="badge bg-secondary rounded-pill">${itemsCount}</span></td>
+                        <td${isCancelled ? ' class="text-muted"' : ''}>$ ${subtotal}</td>
+                        <td${isCancelled ? ' class="text-muted"' : ''}>${discountHtml}</td>
+                        <td class="${grandTotalClass}${isCancelled ? ' text-muted' : ''}">$ ${grandTotal}</td>
+                        <td>${statusBadge}</td>
+                        <td class="text-end">${actionsHtml}</td>
+                    </tr>`;
+                    });
+
+                    // Pagination
+                    renderPagination(apiData);
+
+                    // Summary
+                    summary(apiData);
+
+                } catch (err) {
+                    tbody.innerHTML =
+                        '<tr><td colspan="9" class="text-center text-muted py-4">Failed to load invoices.</td></tr>';
+                    showErrorToast(getErrorMessage(err, 'Failed to load invoices.'));
+                }
+            }
+
+            // Summary
+            function summary(meta) {
+
+                let totalInvoices = meta.total;
+                let finalizedCount = 0;
+                let draftCount = 0;
+                let totalRevenue = 0;
+
+                invoicesData.forEach(item => {
+                    if (item.status === 'finalized') {
+                        finalizedCount++;
+                        totalRevenue += parseFloat(item.grand_total || 0);
+                    } else if (item.status === 'draft') {
+                        draftCount++;
+                    }
+                });
+
+                document.getElementById('totalInvoices').innerText = totalInvoices;
+                document.getElementById('finalizedInvoices').innerText = finalizedCount;
+                document.getElementById('draftInvoices').innerText = draftCount;
+                document.getElementById('totalRevenue').innerText = '$ ' + totalRevenue.toFixed(2);
+            }
+
+
+            // Pagination
+            function renderPagination(meta) {
+
+                let wrapper = document.getElementById('paginationWrapper');
+
+                let html = `<nav class="d-flex justify-content-between align-items-center mt-3">
+    <div class="text-muted small">
+        Showing ${meta.from} to ${meta.to} of ${meta.total} invoices
+    </div>
+    <ul class="pagination pagination-sm mb-0">`;
+
+                // Previous button
+                html += `
+    <li class="page-item ${meta.current_page === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${meta.current_page - 1})">Previous</a>
+    </li>`;
+
+                // Page numbers
+                let start = Math.max(1, meta.current_page - 2);
+                let end = Math.min(meta.last_page, meta.current_page + 2);
+
+                for (let i = start; i <= end; i++) {
+                    html += `
+    <li class="page-item ${i === meta.current_page ? 'active' : ''}">
+        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${i})">${i}</a>
+    </li>`;
+                }
+
+                // Next button
+                html += `
+    <li class="page-item ${meta.current_page === meta.last_page ? 'disabled' : ''}">
+        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${meta.current_page + 1})">Next</a>
+    </li>`;
+
+                html += `</ul></nav>`;
+
+                wrapper.innerHTML = html;
+            }
+        </script>
+    @endpush
+@endsection
+
+
+
+
+04. A. ii) Invoice View/Print:
+------------------------------
+Create show.blade.php
+Edit resources>views>admin>invoices>show.blade.php:
+----------------------------------------------------
+<!-- View Invoice Modal -->
+<div class="modal fade" id="invoiceShowModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Invoice Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="invoiceShowBody">
+                <div class="text-center py-4 text-muted">Loading...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printInvoice()">
+                    <i class="bi bi-printer me-1"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        // View Invoice
+        function viewInvoice(id) {
+            // invoice id
+            let invoice = invoicesData.find(inv => inv.id === id);
+            let body = document.getElementById('invoiceShowBody');
+
+            // Invoice Not Found
+            if (!invoice) {
+                body.innerHTML = '<div class="text-center py-4 text-danger">Invoice not found.</div>';
+                let modalEl = document.getElementById('invoiceShowModal');
+                let modal = new bootstrap.Modal(modalEl);
+                modal.show();
+                return;
+            }
+
+            // Invoice Status
+            let status = invoice.status || 'draft';
+            let statusBadge = '';
+            if (status === 'finalized') {
+                statusBadge = '<span class="badge text-bg-success"><i class="bi bi-check-circle me-1"></i>Finalized</span>';
+            } else if (status === 'cancelled') {
+                statusBadge = '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelled</span>';
+            } else {
+                statusBadge = '<span class="badge text-bg-warning"><i class="bi bi-pencil-square me-1"></i>Draft</span>';
+            }
+
+            // Invoice Item
+            let invoiceDate = invoice.invoice_date ? invoice.invoice_date.substring(0, 10) : '-';
+            let items = invoice.items || [];
+            let itemsRows = '';
+
+            items.forEach((itm, idx) => {
+                let productName = itm.product && itm.product.product_name ? itm.product.product_name : '-';
+                let categoryName = itm.product && itm.product.category && itm.product.category.name ? itm.product
+                    .category.name : '-';
+                let qty = itm.quantity || 0;
+                let unitPrice = parseFloat(itm.unit_price || 0).toFixed(2);
+                let itemDiscount = parseFloat(itm.discount_amount || 0);
+                let lineTotal = parseFloat(itm.line_total || 0).toFixed(2);
+
+                let itemDiscountHtml = '—';
+                if (itemDiscount > 0) {
+                    let label = '';
+                    if (itm.discount_type === 'percent') {
+                        label = ' (' + parseFloat(itm.discount_value || 0) + '%)';
+                    } else if (itm.discount_type === 'fixed') {
+                        label = ' (Fixed)';
+                    }
+                    itemDiscountHtml = '<span class="text-danger">- $ ' + itemDiscount.toFixed(2) +
+                        '</span><span class="text-muted small">' + label + '</span>';
+                }
+
+                itemsRows += `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td>
+                        <div class="fw-semibold">${productName}</div>
+                        <div class="text-muted small">${categoryName}</div>
+                    </td>
+                    <td class="text-center">${qty}</td>
+                    <td class="text-end">$ ${unitPrice}</td>
+                    <td class="text-end">${itemDiscountHtml}</td>
+                    <td class="text-end fw-semibold">$ ${lineTotal}</td>
+                </tr>`;
+            });
+
+            // No Items
+            if (items.length === 0) {
+                itemsRows = '<tr><td colspan="6" class="text-center text-muted py-3">No items.</td></tr>';
+            }
+
+            let subtotal = parseFloat(invoice.subtotal || 0).toFixed(2);
+            let discountAmount = parseFloat(invoice.discount_amount || 0);
+            let grandTotal = parseFloat(invoice.grand_total || 0).toFixed(2);
+
+            let invoiceDiscountHtml = '—';
+            if (discountAmount > 0) {
+                let label = '';
+                if (invoice.discount_type === 'percent') {
+                    label = ' (' + parseFloat(invoice.discount_value || 0) + '%)';
+                } else if (invoice.discount_type === 'fixed') {
+                    label = ' (Fixed)';
+                }
+                invoiceDiscountHtml = '- $ ' + discountAmount.toFixed(2) + '<span class="text-muted small">' + label +
+                    '</span>';
+            }
+
+            body.innerHTML = `
+            <div id="invoicePrintArea">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h4 class="mb-1">${invoice.invoice_no || ''}</h4>
+                        <div class="text-muted">Date: ${invoiceDate}</div>
+                    </div>
+                    <div class="text-end">
+                        ${statusBadge}
+                    </div>
+                </div>
+
+                <hr>
+
+                <h6 class="mb-3">Items</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 40px;">#</th>
+                                <th>Product</th>
+                                <th class="text-center" style="width: 70px;">Qty</th>
+                                <th class="text-end" style="width: 110px;">Unit Price</th>
+                                <th class="text-end" style="width: 140px;">Discount</th>
+                                <th class="text-end" style="width: 120px;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsRows}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row justify-content-end mt-3">
+                    <div class="col-sm-6 col-md-5">
+                        <table class="table table-sm mb-0">
+                            <tr>
+                                <td class="text-muted border-0">Subtotal</td>
+                                <td class="text-end border-0">$ ${subtotal}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Discount</td>
+                                <td class="text-end text-danger">${invoiceDiscountHtml}</td>
+                            </tr>
+                            <tr class="fw-bold">
+                                <td>Grand Total</td>
+                                <td class="text-end fs-5">$ ${grandTotal}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>`;
+
+            let modalEl = document.getElementById('invoiceShowModal');
+            let modal = new bootstrap.Modal(modalEl);
+            modal.show();
+
+        }
+        // View Invoice end
+
+        // Print Invoice without design
+        // function printInvoice(){
+        //     let w = window.open('', '_blank');
+        //     w.document.write(document.getElementById('invoicePrintArea').innerHTML);
+        //     w.print();
+        // }
+
+        // Print Invoice another way with design
+        function printInvoice() {
+            // Catch Print Area
+            let printArea = document.getElementById('invoicePrintArea');
+            if (!printArea) return;
+
+            let printWindow = window.open('', '_blank', 'width=800,height=600');
+            printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Print Invoice</title>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+                <style>
+                    body { padding: 30px; font-size: 14px; }
+                    .badge { border: 1px solid #ccc; }
+                    @media print {
+                        body { padding: 15px; }
+                        .badge { border: 1px solid #ccc; }
+                    }
+                </style>
+            </head>
+            <body>
+                ${printArea.innerHTML}
+
+                <script>
+                    window.onload = function() {
+                    // print
+                        window.print();
+                        // print close
+                        window.onafterprint = function() { window.close(); };
+                    };
+                <\/script>
+
+            </body>
+            </html>
+            `);
+            printWindow.document.close();
+        }
+        // Print Invoice End
+    </script>
+@endpush
+
+
+
+
+
+
+04. A. iii) Invoice Delete:
+----------------------------
+Create Blade delete.blade.php
+Edit resources>views>admin>invoices>delete.blade.php:
+----------------------------------------------------
+<!-- Delete Invoice Modal -->
+<div class="modal fade" id="invoiceDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Invoice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="invoiceDeleteId" value="">
+                <p class="mb-0">Are you sure you want to delete this invoice? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="invoiceDeleteBtn" onclick="doDeleteInvoice()">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        function deleteInvoice(id) {
+            document.getElementById('invoiceDeleteId').value = id;
+            let modalEl = document.getElementById('invoiceDeleteModal');
+            let modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+
+        async function doDeleteInvoice() {
+            let id = document.getElementById('invoiceDeleteId').value.trim();
+            let deleteBtn = document.getElementById('invoiceDeleteBtn');
+
+            let URL = '{{ url('/api/v1/invoices') }}/' + id;
+            let token = localStorage.getItem('token');
+
+            deleteBtn.disabled = true;
+
+            try {
+                let response = await axios.delete(URL, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+
+                if (response.data && response.data.success) {
+                    showSuccessToast(response.data.message || 'Invoice deleted successfully.');
+                    let modalEl = document.getElementById('invoiceDeleteModal');
+                    let modal = window.bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    document.getElementById('invoiceDeleteId').value = '';
+                    if (typeof getInvoices === 'function') getInvoices();
+                } else {
+                    showErrorToast(getErrorMessage(null, 'Failed to delete invoice.'));
+                }
+            } catch (err) {
+                showErrorToast(getErrorMessage(err, 'Failed to delete invoice. Please try again.'));
+            } finally {
+                deleteBtn.disabled = false;
+            }
+        }
+    </script>
+@endpush
+
+
+
+
+
+
+
+04. A. iv) Invoice Finalize:
+----------------------------
+Create Blade finalize.balde.php
+Edit resources>views>admin>invoices>finalize.blade.php:
+-------------------------------------------------------
+<!-- Finalize Invoice Modal -->
+<div class="modal fade" id="invoiceFinalizeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Finalize Invoice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="invoiceFinalizeId" value="">
+                <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0 text-warning me-3">
+                        <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="mb-1 fw-semibold">Are you sure you want to finalize this invoice?</p>
+                        <p class="mb-0 text-muted small">Once finalized, the invoice cannot be edited or deleted. Stock
+                            will be deducted for the invoice items.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="invoiceFinalizeBtn" onclick="doFinalizeInvoice()">
+                    <i class="bi bi-check-lg me-1"></i> Finalize
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        function finalizeInvoice(id) {
+            document.getElementById('invoiceFinalizeId').value = id;
+            let modalEl = document.getElementById('invoiceFinalizeModal');
+            let modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+
+        async function doFinalizeInvoice() {
+            let id = document.getElementById('invoiceFinalizeId').value.trim();
+            let finalizeBtn = document.getElementById('invoiceFinalizeBtn');
+
+            let invoice = invoicesData.find(inv => inv.id == id);
+            if (!invoice) {
+                showErrorToast('Invoice data not found. Please refresh and try again.');
+                return;
+            }
+
+            let URL = '{{ url('/api/v1/invoices') }}/' + id;
+            let token = localStorage.getItem('token');
+
+            let payload = {
+                status: 'finalized',
+                discount_value: parseFloat(invoice.discount_value || 0),
+            };
+
+            finalizeBtn.disabled = true;
+
+            try {
+                let response = await axios.put(URL, payload, {
+                    headers: {
+                        Authorization: 'Bearer ' + token
+                    }
+                });
+
+                if (response.data && response.data.success) {
+                    showSuccessToast(response.data.message || 'Invoice finalized successfully.');
+                    let modalEl = document.getElementById('invoiceFinalizeModal');
+                    let modal = window.bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    document.getElementById('invoiceFinalizeId').value = '';
+                    if (typeof getInvoices === 'function') getInvoices();
+                } else {
+                    showErrorToast(getErrorMessage(null, 'Failed to finalize invoice.'));
+                }
+            } catch (err) {
+                showErrorToast(getErrorMessage(err, 'Failed to finalize invoice. Please try again.'));
+            } finally {
+                finalizeBtn.disabled = false;
+            }
+        }
+    </script>
+@endpush
 
 
 
