@@ -21,8 +21,8 @@ class InvoiceController extends Controller
     {
         try {
             $invoices = Invoice::with(['items.product.category'])
-                ->latest()
-                ->paginate(30);
+                ->orderByDesc('id')
+                ->get();
 
             return response()->json([
                 'success' => true,
