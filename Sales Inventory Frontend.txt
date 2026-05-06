@@ -3805,306 +3805,189 @@ Edit resources>views>admin>pos>index.blade.php:
 Edit resources>views>admin>invoices>index.blade.php:
 ----------------------------------------------------
 @extends('layouts.admin')
-@section('title', 'Invoices')
+@section('title', 'Dashboard')
+
 @section('content')
-    <!-- Summary cards -->
-    <div class="row g-3 mb-4">
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 bg-primary bg-opacity-10 rounded-3 p-3 me-3">
-                            <i class="bi bi-receipt text-primary fs-4"></i>
-                        </div>
-                        <div>
-                            <div class="text-muted small">Total Invoices</div>
-                            <div id="totalInvoices" class="fs-4 fw-semibold">0</div>
-                        </div>
+    {{-- Summary Cards --}}
+    <div class="row g-4 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-primary bg-opacity-10 p-3">
+                        <i class="bi bi-tags text-primary fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Categories</p>
+                        <h4 class="mb-0" id="totalCategories">—</h4>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 bg-success bg-opacity-10 rounded-3 p-3 me-3">
-                            <i class="bi bi-check-circle text-success fs-4"></i>
-                        </div>
-                        <div>
-                            <div class="text-muted small">Finalized</div>
-                            <div id="finalizedInvoices" class="fs-4 fw-semibold">0</div>
-                        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-success bg-opacity-10 p-3">
+                        <i class="bi bi-box text-success fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Products</p>
+                        <h4 class="mb-0" id="totalProducts">—</h4>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 bg-warning bg-opacity-10 rounded-3 p-3 me-3">
-                            <i class="bi bi-pencil-square text-warning fs-4"></i>
-                        </div>
-                        <div>
-                            <div class="text-muted small">Draft</div>
-                            <div id="draftInvoices" class="fs-4 fw-semibold">0</div>
-                        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-info bg-opacity-10 p-3">
+                        <i class="bi bi-receipt text-info fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Invoices</p>
+                        <h4 class="mb-0" id="totalInvoices">—</h4>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 bg-info bg-opacity-10 rounded-3 p-3 me-3">
-                            <i class="bi bi-currency-dollar text-info fs-4"></i>
-                        </div>
-                        <div>
-                            <div class="text-muted small">Total Revenue</div>
-                            <div id="totalRevenue" class="fs-4 fw-semibold">$ 0.00</div>
-                        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-warning bg-opacity-10 p-3">
+                        <i class="bi bi-currency-dollar text-warning fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Total Revenue</p>
+                        <h4 class="mb-0" id="totalRevenue">—</h4>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <span>Invoice List</span>
-            <a href="{{ route('pos') }}" class="btn btn-sm btn-primary">
-                <i class="bi bi-plus-lg me-1"></i> New Invoice (POS)
-            </a>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th style="width: 70px;">#</th>
-                            <th style="width: 160px;">Invoice No</th>
-                            <th style="width: 120px;">Date</th>
-                            <th style="width: 80px;">Items</th>
-                            <th style="width: 120px;">Subtotal</th>
-                            <th style="width: 120px;">Discount</th>
-                            <th style="width: 130px;">Grand Total</th>
-                            <th style="width: 110px;">Status</th>
-                            <th class="text-end" style="width: 180px;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="invoicesTableBody">
-
-                    </tbody>
-                </table>
+    <div class="row g-4">
+        {{-- Stock Alerts --}}
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-exclamation-triangle me-1"></i> Stock Alerts</span>
+                    <span class="badge text-bg-danger" id="stockAlertCount">0</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 70px;">#</th>
+                                    <th>Product</th>
+                                    <th style="width: 160px;">Category</th>
+                                    <th style="width: 120px;">Stock Qty</th>
+                                    <th style="width: 140px;">Threshold</th>
+                                    <th style="width: 120px;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockAlertsTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
-            <!-- Pagination placeholder -->
-            <div id="paginationWrapper"></div>
         </div>
-    </div>
-    {{-- View Invoice, Delete, Finalize --}}
-    @include('admin.invoices.show')
-    @include('admin.invoices.delete')
-    @include('admin.invoices.finalize')
 
-    @push('scripts')
-        <script>
-            let invoicesData = [];
-            let currentPage = 1;
-            getInvoices();
+        {{-- Quick Actions --}}
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">Quick Actions</div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ route('pos') }}" class="btn btn-primary">
+                            <i class="bi bi-receipt me-2"></i> New Invoice (POS)
+                        </a>
+                        <a href="{{ route('products') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-box me-2"></i> Manage Products
+                        </a>
+                        <a href="{{ route('stocks') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-archive me-2"></i> Stock In
+                        </a>
+                        <a href="{{ route('categories') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-tags me-2"></i> Manage Categories
+                        </a>
+                        <a href="{{ route('invoices') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-journal-text me-2"></i> View Invoices
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @push('scripts')
+            <script>
+                // Get Dashboard & Stock Alert Data
+                loadDashboard();
+                async function loadDashboard() {
+                    let URL = '{{ url('/api/v1/dashboard/summary') }}';
+                    let token = localStorage.getItem('token');
+                    let tbody = document.getElementById('stockAlertsTableBody');
 
-
-            async function getInvoices(page = 1) {
-                currentPage = page;
-                // let URL = '{{ url('/api/v1/invoices') }}';
-                // Pagination
-                let URL = `{{ url('/api/v1/invoices') }}?page=${page}`;
-
-                let token = localStorage.getItem('token');
-                let tbody = document.getElementById('invoicesTableBody');
-                try {
-                    let response = await axios.get(URL, {
-                        headers: {
-                            Authorization: 'Bearer ' + token
-                        }
-                    });
-                    // invoicesData = response.data['data'] || [];
-                    let apiData = response.data.data;
-                    invoicesData = apiData.data || [];
-
-                    tbody.innerHTML = '';
-                    if (invoicesData.length === 0) {
-                        tbody.innerHTML =
-                            '<tr><td colspan="9" class="text-center text-muted py-4">No invoices found.</td></tr>';
-                        return;
-                    }
-                    invoicesData.forEach((item) => {
-                        let invoiceDate = item['invoice_date'] ? item['invoice_date'].substring(0, 10) : '-';
-                        let itemsCount = item['items'] ? item['items'].length : 0;
-                        let subtotal = parseFloat(item['subtotal'] || 0).toFixed(2);
-                        let discountAmount = parseFloat(item['discount_amount'] || 0);
-                        let grandTotal = parseFloat(item['grand_total'] || 0).toFixed(2);
-                        let status = item['status'] || 'draft';
-
-                        let discountHtml = '—';
-                        if (discountAmount > 0) {
-                            let discountLabel = '';
-                            if (item['discount_type'] === 'percent') {
-                                discountLabel = parseFloat(item['discount_value'] || 0) + '%';
-                            } else if (item['discount_type'] === 'fixed') {
-                                discountLabel = 'Fixed';
+                    try {
+                        let response = await axios.get(URL, {
+                            headers: {
+                                Authorization: 'Bearer ' + token
                             }
-                            discountHtml = '<span class="text-danger">- $ ' + discountAmount.toFixed(2) + '</span>';
-                            if (discountLabel) {
-                                discountHtml += '<div class="text-muted small">' + discountLabel + '</div>';
-                            }
+                        });
+                        let data = response.data['data'] || {};
+
+                        document.getElementById('totalCategories').textContent = data['total_categories'] ?? '0';
+                        document.getElementById('totalProducts').textContent = data['total_products'] ?? '0';
+                        document.getElementById('totalInvoices').textContent = data['total_invoices'] ?? '0';
+                        document.getElementById('totalRevenue').textContent = '$ ' + parseFloat(data['total_revenue'] || 0)
+                            .toFixed(2);
+
+                        // Low Stock Alert
+                        let alerts = data['stock_alerts'] || [];
+                        document.getElementById('stockAlertCount').textContent = alerts.length;
+
+                        tbody.innerHTML = '';
+
+                        if (alerts.length === 0) {
+                            tbody.innerHTML =
+                                '<tr><td colspan="6" class="text-center text-muted py-4">No stock alerts. All products are well-stocked.</td></tr>';
+                            return;
                         }
 
-                        let statusBadge = '';
-                        let grandTotalClass = 'fw-semibold';
-                        let rowClass = '';
-                        let isCancelled = false;
-                        let isFinalized = false;
+                        alerts.forEach((item) => {
+                            let categoryName = item['category'] && item['category']['name'] ? item['category']['name'] :
+                                '-';
+                            let stock = item['stock_qty'] != null ? item['stock_qty'] : 0;
+                            let threshold = item['low_stock_threshold'] != null ? item['low_stock_threshold'] : 0;
+                            let statusBadge = stock === 0 ?
+                                '<span class="badge text-bg-danger">Out of Stock</span>' :
+                                '<span class="badge text-bg-warning">Low Stock</span>';
 
-                        if (status === 'finalized') {
-                            statusBadge =
-                                '<span class="badge text-bg-success"><i class="bi bi-check-circle me-1"></i>Finalized</span>';
-                            grandTotalClass = 'fw-semibold text-success';
-                            isFinalized = true;
-                        } else if (status === 'cancelled') {
-                            statusBadge =
-                                '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelled</span>';
-                            rowClass = 'class="table-light"';
-                            isCancelled = true;
-                        } else {
-                            statusBadge =
-                                '<span class="badge text-bg-warning"><i class="bi bi-pencil-square me-1"></i>Draft</span>';
-                        }
-
-                        let invoiceNoHtml = isCancelled ?
-                            '<span class="fw-semibold text-muted text-decoration-line-through">' + (item[
-                                'invoice_no'] || '') + '</span>' :
-                            '<span class="fw-semibold text-primary">' + (item['invoice_no'] || '') + '</span>';
-
-                        let actionsHtml = `
-                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="viewInvoice(${item['id']})" title="View">
-                            <i class="bi bi-eye"></i>
-                        </button>`;
-
-                        if (status === 'draft') {
-                            actionsHtml += `
-                        <button type="button" class="btn btn-sm btn-outline-success" onclick="finalizeInvoice(${item['id']})" title="Finalize">
-                            <i class="bi bi-check-lg"></i> Finalize
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteInvoice(${item['id']})" title="Delete">
-                            <i class="bi bi-trash"></i>
-                        </button>`;
-                        } else if (isFinalized) {
-                            actionsHtml += `
-                        <button type="button" class="btn btn-sm btn-outline-danger" disabled title="Cannot delete finalized">
-                            <i class="bi bi-trash"></i>
-                        </button>`;
-                        } else {
-                            actionsHtml += `
-                        <button type="button" class="btn btn-sm btn-outline-danger" disabled>
-                            <i class="bi bi-trash"></i>
-                        </button>`;
-                        }
-
-                        tbody.innerHTML += `
-                    <tr ${rowClass}>
-                        <td${isCancelled ? ' class="text-muted"' : ''}>${item['id']}</td>
-                        <td>${invoiceNoHtml}</td>
-                        <td class="text-muted">${invoiceDate}</td>
-                        <td><span class="badge bg-secondary rounded-pill">${itemsCount}</span></td>
-                        <td${isCancelled ? ' class="text-muted"' : ''}>$ ${subtotal}</td>
-                        <td${isCancelled ? ' class="text-muted"' : ''}>${discountHtml}</td>
-                        <td class="${grandTotalClass}${isCancelled ? ' text-muted' : ''}">$ ${grandTotal}</td>
+                            tbody.innerHTML += (`
+                    <tr>
+                        <td>${item['id']}</td>
+                        <td class="fw-semibold">${item['product_name'] || ''}</td>
+                        <td class="text-muted">${categoryName}</td>
+                        <td><span class="badge text-bg-danger">${stock}</span></td>
+                        <td class="text-muted">${threshold}</td>
                         <td>${statusBadge}</td>
-                        <td class="text-end">${actionsHtml}</td>
-                    </tr>`;
-                    });
+                    </tr>
+                `);
+                        });
+                        // Low Stock Alert end
 
-                    // Pagination
-                    renderPagination(apiData);
-
-                    // Summary
-                    summary(apiData);
-
-                } catch (err) {
-                    tbody.innerHTML =
-                        '<tr><td colspan="9" class="text-center text-muted py-4">Failed to load invoices.</td></tr>';
-                    showErrorToast(getErrorMessage(err, 'Failed to load invoices.'));
-                }
-            }
-
-            // Summary
-            function summary(meta) {
-
-                let totalInvoices = meta.total;
-                let finalizedCount = 0;
-                let draftCount = 0;
-                let totalRevenue = 0;
-
-                invoicesData.forEach(item => {
-                    if (item.status === 'finalized') {
-                        finalizedCount++;
-                        totalRevenue += parseFloat(item.grand_total || 0);
-                    } else if (item.status === 'draft') {
-                        draftCount++;
+                    } catch (err) {
+                        tbody.innerHTML =
+                            '<tr><td colspan="6" class="text-center text-muted py-4">Failed to load dashboard data.</td></tr>';
+                        showErrorToast(getErrorMessage(err, 'Failed to load dashboard data.'));
                     }
-                });
-
-                document.getElementById('totalInvoices').innerText = totalInvoices;
-                document.getElementById('finalizedInvoices').innerText = finalizedCount;
-                document.getElementById('draftInvoices').innerText = draftCount;
-                document.getElementById('totalRevenue').innerText = '$ ' + totalRevenue.toFixed(2);
-            }
-
-
-            // Pagination
-            function renderPagination(meta) {
-
-                let wrapper = document.getElementById('paginationWrapper');
-
-                let html = `<nav class="d-flex justify-content-between align-items-center mt-3">
-    <div class="text-muted small">
-        Showing ${meta.from} to ${meta.to} of ${meta.total} invoices
-    </div>
-    <ul class="pagination pagination-sm mb-0">`;
-
-                // Previous button
-                html += `
-    <li class="page-item ${meta.current_page === 1 ? 'disabled' : ''}">
-        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${meta.current_page - 1})">Previous</a>
-    </li>`;
-
-                // Page numbers
-                let start = Math.max(1, meta.current_page - 2);
-                let end = Math.min(meta.last_page, meta.current_page + 2);
-
-                for (let i = start; i <= end; i++) {
-                    html += `
-    <li class="page-item ${i === meta.current_page ? 'active' : ''}">
-        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${i})">${i}</a>
-    </li>`;
                 }
-
-                // Next button
-                html += `
-    <li class="page-item ${meta.current_page === meta.last_page ? 'disabled' : ''}">
-        <a class="page-link" href="javascript:void(0)" onclick="getInvoices(${meta.current_page + 1})">Next</a>
-    </li>`;
-
-                html += `</ul></nav>`;
-
-                wrapper.innerHTML = html;
-            }
-        </script>
-    @endpush
-@endsection
+                // Get Dashboard & Stock Alert Data end
+            </script>
+        @endpush
+    @endsection
 
 
 
@@ -4506,6 +4389,212 @@ Edit resources>views>admin>invoices>finalize.blade.php:
         }
     </script>
 @endpush
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+04. A. v) Dashboard Dynamic:
+Edit resources>views>admin>dashbord>index.blade.php:
+----------------------------------------------------
+@extends('layouts.admin')
+@section('title', 'Dashboard')
+
+@section('content')
+    {{-- Summary Cards --}}
+    <div class="row g-4 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-primary bg-opacity-10 p-3">
+                        <i class="bi bi-tags text-primary fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Categories</p>
+                        <h4 class="mb-0" id="totalCategories">—</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-success bg-opacity-10 p-3">
+                        <i class="bi bi-box text-success fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Products</p>
+                        <h4 class="mb-0" id="totalProducts">—</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-info bg-opacity-10 p-3">
+                        <i class="bi bi-receipt text-info fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Invoices</p>
+                        <h4 class="mb-0" id="totalInvoices">—</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 bg-warning bg-opacity-10 p-3">
+                        <i class="bi bi-currency-dollar text-warning fs-3"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted small mb-0">Total Revenue</p>
+                        <h4 class="mb-0" id="totalRevenue">—</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {{-- Stock Alerts --}}
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-exclamation-triangle me-1"></i> Stock Alerts</span>
+                    <span class="badge text-bg-danger" id="stockAlertCount">0</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 70px;">#</th>
+                                    <th>Product</th>
+                                    <th style="width: 160px;">Category</th>
+                                    <th style="width: 120px;">Stock Qty</th>
+                                    <th style="width: 140px;">Threshold</th>
+                                    <th style="width: 120px;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockAlertsTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Quick Actions --}}
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">Quick Actions</div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ route('pos') }}" class="btn btn-primary">
+                            <i class="bi bi-receipt me-2"></i> New Invoice (POS)
+                        </a>
+                        <a href="{{ route('products') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-box me-2"></i> Manage Products
+                        </a>
+                        <a href="{{ route('stocks') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-archive me-2"></i> Stock In
+                        </a>
+                        <a href="{{ route('categories') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-tags me-2"></i> Manage Categories
+                        </a>
+                        <a href="{{ route('invoices') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-journal-text me-2"></i> View Invoices
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @push('scripts')
+            <script>
+                // Get Dashboard & Stock Alert Data
+                loadDashboard();
+                async function loadDashboard() {
+                    let URL = '{{ url('/api/v1/dashboard/summary') }}';
+                    let token = localStorage.getItem('token');
+                    let tbody = document.getElementById('stockAlertsTableBody');
+
+                    try {
+                        let response = await axios.get(URL, {
+                            headers: {
+                                Authorization: 'Bearer ' + token
+                            }
+                        });
+                        let data = response.data['data'] || {};
+
+                        document.getElementById('totalCategories').textContent = data['total_categories'] ?? '0';
+                        document.getElementById('totalProducts').textContent = data['total_products'] ?? '0';
+                        document.getElementById('totalInvoices').textContent = data['total_invoices'] ?? '0';
+                        document.getElementById('totalRevenue').textContent = '$ ' + parseFloat(data['total_revenue'] || 0)
+                            .toFixed(2);
+
+                        // Low Stock Alert
+                        let alerts = data['stock_alerts'] || [];
+                        document.getElementById('stockAlertCount').textContent = alerts.length;
+
+                        tbody.innerHTML = '';
+
+                        if (alerts.length === 0) {
+                            tbody.innerHTML =
+                                '<tr><td colspan="6" class="text-center text-muted py-4">No stock alerts. All products are well-stocked.</td></tr>';
+                            return;
+                        }
+
+                        alerts.forEach((item) => {
+                            let categoryName = item['category'] && item['category']['name'] ? item['category']['name'] :
+                                '-';
+                            let stock = item['stock_qty'] != null ? item['stock_qty'] : 0;
+                            let threshold = item['low_stock_threshold'] != null ? item['low_stock_threshold'] : 0;
+                            let statusBadge = stock === 0 ?
+                                '<span class="badge text-bg-danger">Out of Stock</span>' :
+                                '<span class="badge text-bg-warning">Low Stock</span>';
+
+                            tbody.innerHTML += (`
+                    <tr>
+                        <td>${item['id']}</td>
+                        <td class="fw-semibold">${item['product_name'] || ''}</td>
+                        <td class="text-muted">${categoryName}</td>
+                        <td><span class="badge text-bg-danger">${stock}</span></td>
+                        <td class="text-muted">${threshold}</td>
+                        <td>${statusBadge}</td>
+                    </tr>
+                `);
+                        });
+                        // Low Stock Alert end
+
+                    } catch (err) {
+                        tbody.innerHTML =
+                            '<tr><td colspan="6" class="text-center text-muted py-4">Failed to load dashboard data.</td></tr>';
+                        showErrorToast(getErrorMessage(err, 'Failed to load dashboard data.'));
+                    }
+                }
+                // Get Dashboard & Stock Alert Data end
+            </script>
+        @endpush
+    @endsection
+
+
+
+
+
 
 
 
