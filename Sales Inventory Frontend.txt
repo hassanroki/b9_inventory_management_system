@@ -4600,3 +4600,165 @@ Edit resources>views>admin>dashbord>index.blade.php:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+05. => Invoices, Printing/Download, Dashboard Summary & Project Finish--Part 1:
+=========================================================================
+Datatables link: https://datatables.net/
+#need jquery cdn:
+---------------
+ <script src="
+https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js
+"></script>
+
+#need style & js:
+-----------------
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/2.3.8/js/dataTables.js"></script>
+
+
+
+
+
+05. A) Add, CDN, Style, JS:
+--------------------------
+Edit resources>views>layouts>admin.blade.php:
+---------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@yield('title', 'Admin')</title>
+
+    <!-- Bootstrap 5 CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    {{-- Data Table CSS --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.css" />
+    <!-- Admin layout CSS -->
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        @include('layouts.partials.sidebar')
+
+        <!-- Main content area -->
+        <main class="admin-main">
+            {{-- Header  --}}
+            @include('layouts.partials.header')
+
+            <div class="admin-content">
+                @yield('content')
+            </div>
+
+        </main>
+
+    </div>
+
+    {{-- Axios --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Bootstrap 5 JS (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- jQuery CDN --}}
+    <script src="
+            https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js
+            "></script>
+    {{-- Data Table JS --}}
+    <script src="https://cdn.datatables.net/2.3.8/js/dataTables.js"></script>
+    {{-- Common JS --}}
+    <script src="{{ asset('js/common.js') }}"></script>
+    <!-- Admin layout JS -->
+    <script src="{{ asset('js/admin.js') }}"></script>
+    @stack('scripts')
+</body>
+
+</html>
+
+
+
+
+
+
+05. B) Used Data Tables Categories:
+------------------------------------
+Edit resources>views>admin>categories>index.blade.php:
+------------------------------------------------------
+1st add id:  <table id="categoriesTable" class="table table-hover align-middle">
+2nd inital: let table = new DataTable('#categoriesTable');
+
+
+
+Customization করতে চাইলেঃ
+-------------------------
+Edit resources>views>admin>categories>index.blade.php:
+------------------------------------------------------
+1st add id:  <table id="categoriesTable" class="table table-hover align-middle">
+2nd inial: let table = new DataTable('#categoriesTable');
+
+
+
+
+
+
+05. C) Used Data Tables Products:
+------------------------------------
+Edit resources>views>admin>products>index.blade.php:
+------------------------------------------------------
+1st add id:  <table id="productsTable" class="table table-hover align-middle">
+2nd inital: let table = new DataTable('#productsTable');
+
+
+
+
+
+
+05. D) Used Data Tables Product Stock:
+--------------------------------------
+Edit resources>views>admin>stocks>index.blade.php:
+------------------------------------------------------
+1st add id:  <table id="stocksProductsTable" class="table table-hover align-middle">
+2nd inital: let table = new DataTable('#stocksProductsTable');
+
+
+
+
+
+05. E) Used Data Tables Invoice:
+--------------------------------------
+Edit resources>views>admin>invoices>index.blade.php:
+------------------------------------------------------
+1st add id:  <table id="invoicesTable" class="table table-hover align-middle">
+2nd inital: let table = new DataTable('#invoicesTable');
+
+
+
+
+
+
+05. F) Used Data Tables Stock Alerts:
+--------------------------------------
+Edit resources>views>admin>dashboard>index.blade.php:
+------------------------------------------------------
+1st add id:  <table id="stockAlertsTable" class="table table-hover align-middle">
+2nd inital: let table = new DataTable('#stockAlertsTable');
+
+
+
+
+

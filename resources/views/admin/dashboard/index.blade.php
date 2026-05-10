@@ -68,7 +68,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
+                        <table id="stockAlertsTable" class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th style="width: 70px;">#</th>
@@ -171,6 +171,9 @@
                 `);
                         });
                         // Low Stock Alert end
+
+                        // Data table
+                        let table = new DataTable('#stockAlertsTable');
 
                     } catch (err) {
                         tbody.innerHTML =
