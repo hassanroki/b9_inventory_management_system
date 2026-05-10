@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover align-middle">
+                <table id="categoriesTable" class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
                             <th style="width: 70px;">#</th>
@@ -72,6 +72,13 @@
                                 </td>
                             </tr>`
                         );
+                    });
+
+                    // Data Tables
+                    let table = new DataTable('#categoriesTable', {
+                        // per page
+                        perPage: 5,
+                        perPageSelect: [5, 10, 50, 100],
                     });
                 } catch (error) {
                     tbody.innerHTML =

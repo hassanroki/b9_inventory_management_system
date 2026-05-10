@@ -7,25 +7,25 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <span>Invoice List</span>
-            <a href="{{route('pos')}}" class="btn btn-sm btn-primary">
+            <a href="{{ route('pos') }}" class="btn btn-sm btn-primary">
                 <i class="bi bi-plus-lg me-1"></i> New Invoice (POS)
             </a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover align-middle">
+                <table id="invoicesTable" class="table table-hover align-middle">
                     <thead class="table-light">
-                    <tr>
-                        <th style="width: 70px;">#</th>
-                        <th style="width: 160px;">Invoice No</th>
-                        <th style="width: 120px;">Date</th>
-                        <th style="width: 80px;">Items</th>
-                        <th style="width: 120px;">Subtotal</th>
-                        <th style="width: 120px;">Discount</th>
-                        <th style="width: 130px;">Grand Total</th>
-                        <th style="width: 110px;">Status</th>
-                        <th class="text-end" style="width: 180px;">Actions</th>
-                    </tr>
+                        <tr>
+                            <th style="width: 70px;">#</th>
+                            <th style="width: 160px;">Invoice No</th>
+                            <th style="width: 120px;">Date</th>
+                            <th style="width: 80px;">Items</th>
+                            <th style="width: 120px;">Subtotal</th>
+                            <th style="width: 120px;">Discount</th>
+                            <th style="width: 130px;">Grand Total</th>
+                            <th style="width: 110px;">Status</th>
+                            <th class="text-end" style="width: 180px;">Actions</th>
+                        </tr>
                     </thead>
                     <tbody id="invoicesTableBody">
 
@@ -43,21 +43,25 @@
     @include('admin.invoices.finalize')
 
     @push('scripts')
-
         <script>
             let invoicesData = [];
             getInvoices();
 
             async function getInvoices() {
-                let URL = '{{ url("/api/v1/invoices") }}';
+                let URL = '{{ url('/api/v1/invoices') }}';
                 let token = localStorage.getItem('token');
                 let tbody = document.getElementById('invoicesTableBody');
                 try {
-                    let response = await axios.get(URL, { headers: { Authorization: 'Bearer ' + token } });
+                    let response = await axios.get(URL, {
+                        headers: {
+                            Authorization: 'Bearer ' + token
+                        }
+                    });
                     invoicesData = response.data['data'] || [];
                     tbody.innerHTML = '';
                     if (invoicesData.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-4">No invoices found.</td></tr>';
+                        tbody.innerHTML =
+                            '<tr><td colspan="9" class="text-center text-muted py-4">No invoices found.</td></tr>';
                         return;
                     }
                     invoicesData.forEach((item) => {
@@ -89,20 +93,24 @@
                         let isFinalized = false;
 
                         if (status === 'finalized') {
-                            statusBadge = '<span class="badge text-bg-success"><i class="bi bi-check-circle me-1"></i>Finalized</span>';
+                            statusBadge =
+                                '<span class="badge text-bg-success"><i class="bi bi-check-circle me-1"></i>Finalized</span>';
                             grandTotalClass = 'fw-semibold text-success';
                             isFinalized = true;
                         } else if (status === 'cancelled') {
-                            statusBadge = '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelled</span>';
+                            statusBadge =
+                                '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelled</span>';
                             rowClass = 'class="table-light"';
                             isCancelled = true;
                         } else {
-                            statusBadge = '<span class="badge text-bg-warning"><i class="bi bi-pencil-square me-1"></i>Draft</span>';
+                            statusBadge =
+                                '<span class="badge text-bg-warning"><i class="bi bi-pencil-square me-1"></i>Draft</span>';
                         }
 
-                        let invoiceNoHtml = isCancelled
-                            ? '<span class="fw-semibold text-muted text-decoration-line-through">' + (item['invoice_no'] || '') + '</span>'
-                            : '<span class="fw-semibold text-primary">' + (item['invoice_no'] || '') + '</span>';
+                        let invoiceNoHtml = isCancelled ?
+                            '<span class="fw-semibold text-muted text-decoration-line-through">' + (item[
+                                'invoice_no'] || '') + '</span>' :
+                            '<span class="fw-semibold text-primary">' + (item['invoice_no'] || '') + '</span>';
 
                         let actionsHtml = `
                         <button type="button" class="btn btn-sm btn-outline-primary" onclick="viewInvoice(${item['id']})" title="View">
@@ -142,12 +150,16 @@
                         <td class="text-end">${actionsHtml}</td>
                     </tr>`;
                     });
+
+                    // Data table
+                    let table = new DataTable('#invoicesTable');
+
                 } catch (err) {
-                    tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-4">Failed to load invoices.</td></tr>';
+                    tbody.innerHTML =
+                        '<tr><td colspan="9" class="text-center text-muted py-4">Failed to load invoices.</td></tr>';
                     showErrorToast(getErrorMessage(err, 'Failed to load invoices.'));
                 }
             }
         </script>
-
     @endpush
 @endsection
