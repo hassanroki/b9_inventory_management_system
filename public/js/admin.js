@@ -75,6 +75,7 @@
         } finally {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+            document.cookie = "api_token=; path=/; max-age=0; SameSite=Lax";
             window.location.href = "/login";
         }
     }

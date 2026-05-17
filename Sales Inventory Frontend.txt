@@ -4762,3 +4762,184 @@ Edit resources>views>admin>dashboard>index.blade.php:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+06. => Invoices, Printing/Download, Dashboard Summary & Project Finish--Part 2:
+===============================================================================
+আমাদের cookie based করতে হবে কারনণ Middleware Cookie access নিতে পারে, session access নিতে পারে না।
+06. A) Create Middleware
+Command: php artisan make:middleware TokenAuthentication
+Edit app>Http>Middleware>TokenAuthentication.php:
+-------------------------------------------------
+public function handle(Request $request, Closure $next): Response
+    {
+        $token = $request->cookie('api_token');
+        if (! $token) {
+            return redirect()->route('login');
+        }
+
+        // Date Validation check
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (! $accessToken) {
+            return redirect()->route('login')->withCookie(
+                cookie()->forget('api_token')
+            );
+        }
+
+        // User check
+        $user = $accessToken->tokenable;
+        if (! $user) {
+            return redirect()->route('login')->withCookie(
+                cookie()->forget('api_token')
+            );
+        }
+
+        Auth::setUser($user);
+
+        return $next($request);
+    }
+
+
+
+
+
+
+06. B) Middleware import app.php
+Edit bootstrap>app.php:
+-----------------------
+   ->withMiddleware(function (Middleware $middleware): void {
+        //
+        $middleware->alias([
+            'token.auth' => TokenAuthentication::class,
+        ]);
+
+        // The api_token cookie is set by JavaScript, so it must not be encrypted/decrypted by laravel
+        $middleware->encryptCookies(['api_token']);
+    })
+
+
+
+
+
+
+06. C) লগিনে cookie set করে দিতে হবে
+Edit resources>views>admin>auth>login.blade.php:
+------------------------------------------------
+if (data && data.token) {
+                        localStorage.setItem('token', data.token);
+                        // Store token as an HttpOnly safe cookie so the server middleware can read it
+                        document.cookie = 'api_token=' + encodeURIComponent(data.token) + ';path=; max-age=' + (60 * 60 * 24 * 30) // 30 days
+                        + '; SameSite=Lax';
+                    }
+
+
+
+
+
+06. D) login/logout করার সময় controller এ সেট করে দিতে হবে
+Edit app>Http>controllers>AuthController.php:
+---------------------------------------------
+// Login
+    public function showLoginForm(Request $request)
+    {
+        $token = $request->cookie('api_token');
+
+        if ($token) {
+            $accessToken = PersonalAccessToken::findToken($token);
+
+            if ($accessToken && $accessToken->tokenable) {
+                return redirect()->route('dashboard');
+            }
+        }
+
+        return view('admin.auth.login');
+    }
+
+    // Logout
+    public function logout(Request $request)
+    {
+        $token = $request->cookie('api_token');
+
+        if ($token) {
+            $accessToken = PersonalAccessToken::findToken($token);
+            $accessToken?->delete();
+        }
+
+        return redirect()->route('login')->withCookie(
+            cookie()->forget('api_token')
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+06. E) logout এর সময় validation time 0 করে দিতে হবে
+Edit public>js>admin.js:
+-----------------------
+ } finally {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            document.cookie = "api_token=; path=/; max-age=0; SameSite=Lax";
+            window.location.href = "/login";
+        }
+
+
+
+
+
+
+
+06. F) Edit Route>web.php:
+--------------------------
+Route::get('/', function () {
+    return redirect()->route('login');
+})->name('home');
+
+// Login
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+
+Route::middleware('token.auth')->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/categories', [DashboardController::class, 'category'])->name('categories');
+    Route::get('/products', [DashboardController::class, 'product'])->name('products');
+    Route::get('/stocks', [DashboardController::class, 'stock'])->name('stocks');
+    Route::get('/pos', [DashboardController::class, 'pos'])->name('pos');
+    Route::get('/invoices', [DashboardController::class, 'invoice'])->name('invoices');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
