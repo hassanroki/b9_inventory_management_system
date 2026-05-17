@@ -67,6 +67,9 @@
                     let data = response.data && response.data.data;
                     if (data && data.token) {
                         localStorage.setItem('token', data.token);
+                        // Store token as an HttpOnly safe cookie so the server middleware can read it
+                        document.cookie = 'api_token=' + encodeURIComponent(data.token) + ';path=; max-age=' + (60 * 60 * 24 * 30) // 30 days
+                        + '; SameSite=Lax';
                     }
                     window.location = '{{ route('dashboard') }}'
                 } else {
