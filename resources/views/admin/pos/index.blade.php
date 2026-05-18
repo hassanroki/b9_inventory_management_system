@@ -353,7 +353,7 @@
                     let discountAmount = 0;
 
                     if (item.discount_type === 'fixed') {
-                        discountAmount = Math.min(item.discount_value, lineBeforeDiscount);
+                        discountAmount = Math.min(item.discount_value * item.quantity, lineBeforeDiscount);
                         // discountAmount = lineBeforeDiscount - item.discount_value;
                     } else if (item.discount_type === 'percent') {
                         discountAmount = lineBeforeDiscount * (item.discount_value / 100);
@@ -400,6 +400,8 @@
 
                 // Item discounts row
                 let itemDiscountRow = document.getElementById('itemDiscountRow');
+                document.getElementById('itemDiscountDisplay').textContent = '- ' + formatMoney(itemDiscountsTotal);
+                itemDiscountRow.style.display = itemDiscountsTotal > 0 ? 'flex' : 'none';
                 if (itemDiscountsTotal > 0) {
                     itemDiscountRow.style.display = 'flex';
                     document.getElementById('itemDiscountDisplay').textContent = '- ' + formatMoney(itemDiscountsTotal);
@@ -494,6 +496,13 @@
                 document.getElementById('invoiceDateInput').value = todayDate();
                 document.getElementById('invoiceDiscountType').value = '';
                 document.getElementById('invoiceDiscountValue').value = '0';
+
+                // force hide item discount row when resetting
+                document.getElementById('itemDiscountRow').style.display = 'none';
+                document.getElementById('itemDiscountDisplay').textContent = '- $ 0.00';
+                document.getElementById('invoiceDiscountRow').style.display = 'none';
+                document.getElementById('invoiceDiscountDisplay').textContent = '- $ 0.00';
+
                 renderCart();
             }
 
