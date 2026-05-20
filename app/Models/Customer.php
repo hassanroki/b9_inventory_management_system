@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Customer extends Model
+{
+    // protected
+    protected $fillable = ['name', 'email', 'mobile', 'description'];
+}
