@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('customer_id')
+                ->nullable()
+                ->constrained('customers')
+                ->onDelete('set null');
             $table->string('invoice_no')->unique();
             $table->date('invoice_date');
             $table->decimal('subtotal', 12, 2)->default(0);

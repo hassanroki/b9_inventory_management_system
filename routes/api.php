@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\DashBoardController;
 use App\Http\Controllers\Api\V1\InvoiceController;
 use App\Http\Controllers\Api\V1\ProductController;
@@ -45,6 +46,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/stocks', [StockController::class, 'index']);
         Route::post('/stocks', [StockController::class, 'stockIn']);
         Route::post('/stocks/adjustment', [StockController::class, 'stockAdjustment']);
+
+        //Customer Routes
+        Route::get('/customers', [CustomerController::class, 'index']);
+        Route::post('/customers', [CustomerController::class, 'store']);
+        Route::get('/customers/{id}', [CustomerController::class, 'show']);
+        Route::put('/customers/{id}', [CustomerController::class, 'update']);
+        Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
 
         // Invoice Route
         Route::get('/invoices', [InvoiceController::class, 'index']);
