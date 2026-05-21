@@ -8,16 +8,21 @@
             <div class="card mb-3">
                 <div class="card-body py-3">
                     <div class="row g-2">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="input-group">
                                 <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                                 <input type="text" class="form-control" placeholder="Search product by name or SKU..."
                                     id="searchInput">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <select class="form-select" id="categoryFilter">
                                 <option value="">All categories</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="customerSelect">
+                                <option value="">Select Customer</option>
                             </select>
                         </div>
                     </div>
@@ -47,6 +52,16 @@
                     <span class="badge bg-white text-primary" id="cartBadge">0 items</span>
                 </div>
                 <div class="card-body p-0">
+                    <!-- Customer Info Display -->
+                    <div class="border-bottom p-3 bg-light" id="customerInfo" style="display: none;">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-circle fs-4 me-2 text-primary"></i>
+                            <div>
+                                <div class="fw-semibold" id="customerName"></div>
+                                <div class="small text-muted" id="customerMobile"></div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Cart Items -->
                     <div class="p-3" style="max-height: 320px; overflow-y: auto;" id="cartItemsContainer">
                         <div class="text-center text-muted py-4">Cart is empty</div>
@@ -116,7 +131,8 @@
                             </button>
                             <div class="row g-2">
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-outline-primary w-100" id="saveDraftBtn" disabled>
+                                    <button type="button" class="btn btn-outline-primary w-100" id="saveDraftBtn"
+                                        disabled>
                                         <i class="bi bi-save me-1"></i>Save Draft
                                     </button>
                                 </div>
@@ -136,6 +152,10 @@
     @push('scripts')
         <script>
             // API URLS
+            let customersUrl = '{{ url('/api/v1/customers') }}';
+            let allCustomers = [];
+            let selectedCustomer = null;
+
             let productsUrl = '{{ url('/api/v1/products') }}';
             let categoriesUrl = '{{ url('/api/v1/categories') }}';
             let invoicesUrl = '{{ url('/api/v1/invoices') }}';
@@ -175,6 +195,59 @@
                 div.textContent = text == null ? '' : text;
                 return div.innerHTML;
             }
+
+
+            // Load Customers
+            async function loadCustomers() {
+                try {
+                    let response = await axios.get(customersUrl, authHeaders());
+                    allCustomers = response.data['data'] || [];
+
+                    let select = document.getElementById('customerSelect');
+                    select.innerHTML = '';
+
+                    // Default Walk In customer option
+                    select.innerHTML +=
+                        '<option value="walkin" data-name="Walk In Customer" data-mobile="">Walk In Customer</option>';
+
+                    allCustomers.forEach(function(customer) {
+                        let option = document.createElement('option');
+                        option.value = customer.id;
+                        option.setAttribute('data-name', customer.name);
+                        option.setAttribute('data-mobile', customer.mobile || '');
+                        option.textContent =
+                            `${customer.name} ${customer.mobile ? '(' + customer.mobile + ')' : ''}`;
+                        select.appendChild(option);
+                    });
+
+                    select.value = 'walkin';
+                    select.dispatchEvent(new Event('change'));
+                } catch (err) {
+                    showErrorToast(getErrorMessage(err, 'Failed to load customers'));
+                }
+            }
+            loadCustomers();
+
+            // Customer select change handler
+            document.getElementById('customerSelect').addEventListener('change', function() {
+                let option = this.options[this.selectedIndex];
+
+                if (!option.value) {
+                    selectedCustomer = null;
+                    document.getElementById('customerInfo').style.display = 'none';
+                    return;
+                }
+
+                selectedCustomer = {
+                    id: option.value === 'walkin' ? null : option.value,
+                    name: option.dataset.name || 'Walk In Customer',
+                    mobile: option.dataset.mobile || ''
+                };
+
+                document.getElementById('customerName').textContent = selectedCustomer.name;
+                document.getElementById('customerMobile').textContent = selectedCustomer.mobile || 'No mobile';
+                document.getElementById('customerInfo').style.display = 'block';
+            });
 
             // ─── Load Categories ────────────────────────────────────────
             async function loadCategories() {
@@ -421,8 +494,8 @@
                 // Cart badge & buttons
                 document.getElementById('cartBadge').textContent = cart.length + ' item' + (cart.length !== 1 ? 's' : '');
                 document.getElementById('totalsSection').style.display = cart.length > 0 ? 'block' : 'none';
-                document.getElementById('finalizeBtn').disabled = cart.length === 0;
-                document.getElementById('saveDraftBtn').disabled = cart.length === 0;
+                document.getElementById('finalizeBtn').disabled = cart.length === 0 || !selectedCustomer;
+                document.getElementById('saveDraftBtn').disabled = cart.length === 0 || !selectedCustomer;
             }
 
             // ─── Render Cart ────────────────────────────────────────────
@@ -492,12 +565,17 @@
             // ─── Reset Cart ─────────────────────────────────────────────
             function resetCart() {
                 cart = [];
+                selectedCustomer = null;
+
+                document.getElementById('customerSelect').value = 'walkin';
+                document.getElementById('customerSelect').dispatchEvent(new Event('change'));
+
+                document.getElementById('customerInfo').style.display = 'none';
                 document.getElementById('invoiceNoInput').value = '';
                 document.getElementById('invoiceDateInput').value = todayDate();
                 document.getElementById('invoiceDiscountType').value = '';
                 document.getElementById('invoiceDiscountValue').value = '0';
 
-                // force hide item discount row when resetting
                 document.getElementById('itemDiscountRow').style.display = 'none';
                 document.getElementById('itemDiscountDisplay').textContent = '- $ 0.00';
                 document.getElementById('invoiceDiscountRow').style.display = 'none';
@@ -531,6 +609,7 @@
                 return {
                     invoice_no: invoiceNo,
                     invoice_date: invoiceDate,
+                    customer_id: selectedCustomer ? selectedCustomer.id : null,
                     items: items,
                     subtotal: Math.round(subtotal * 100) / 100,
                     discount_type: discountType || null,
@@ -543,6 +622,11 @@
 
             // ─── Submit Invoice ─────────────────────────────────────────
             async function submitInvoice(status) {
+                if (!selectedCustomer) {
+                    showErrorToast('Please select a customer');
+                    return;
+                }
+
                 if (cart.length === 0) {
                     showErrorToast('Cart is empty.');
                     return;

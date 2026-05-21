@@ -18,6 +18,7 @@ Route::middleware('token.auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/categories', [DashboardController::class, 'category'])->name('categories');
     Route::get('/products', [DashboardController::class, 'product'])->name('products');
+    Route::get('/customers',[DashboardController::class,'customers'])->name('customers');
     Route::get('/stocks', [DashboardController::class, 'stock'])->name('stocks');
     Route::get('/pos', [DashboardController::class, 'pos'])->name('pos');
     Route::get('/invoices', [DashboardController::class, 'invoice'])->name('invoices');
