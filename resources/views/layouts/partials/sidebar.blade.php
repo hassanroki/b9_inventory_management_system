@@ -16,6 +16,10 @@
             <i class="bi bi-box"></i>
             <span>Products</span>
         </a>
+        <a class="nav-link {{ request()->routeIs('customers') ? 'active' : '' }}" href="{{ route('customers') }}">
+            <i class="bi bi-box"></i>
+            <span>Customers</span>
+        </a>
         <a class="nav-link {{ request()->routeIs('stocks') ? 'active' : '' }}" href="{{ route('stocks') }}">
             <i class="bi bi-archive"></i>
             <span>Product Stock</span>
