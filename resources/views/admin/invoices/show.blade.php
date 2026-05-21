@@ -21,13 +21,10 @@
 
 @push('scripts')
     <script>
-        // View Invoice
-        function viewInvoice(id) {
-            // invoice id
+        function viewInvoice(id){
             let invoice = invoicesData.find(inv => inv.id === id);
             let body = document.getElementById('invoiceShowBody');
 
-            // Invoice Not Found
             if (!invoice) {
                 body.innerHTML = '<div class="text-center py-4 text-danger">Invoice not found.</div>';
                 let modalEl = document.getElementById('invoiceShowModal');
@@ -36,7 +33,6 @@
                 return;
             }
 
-            // Invoice Status
             let status = invoice.status || 'draft';
             let statusBadge = '';
             if (status === 'finalized') {
@@ -47,15 +43,16 @@
                 statusBadge = '<span class="badge text-bg-warning"><i class="bi bi-pencil-square me-1"></i>Draft</span>';
             }
 
-            // Invoice Item
             let invoiceDate = invoice.invoice_date ? invoice.invoice_date.substring(0, 10) : '-';
             let items = invoice.items || [];
             let itemsRows = '';
 
+            let customerName = invoice.customer && invoice.customer.name ? invoice.customer.name : '-';
+            let customerMobile = invoice.customer && invoice.customer.mobile ? invoice.customer.mobile : '-';
+
             items.forEach((itm, idx) => {
                 let productName = itm.product && itm.product.product_name ? itm.product.product_name : '-';
-                let categoryName = itm.product && itm.product.category && itm.product.category.name ? itm.product
-                    .category.name : '-';
+                let categoryName = itm.product && itm.product.category && itm.product.category.name ? itm.product.category.name : '-';
                 let qty = itm.quantity || 0;
                 let unitPrice = parseFloat(itm.unit_price || 0).toFixed(2);
                 let itemDiscount = parseFloat(itm.discount_amount || 0);
@@ -69,8 +66,7 @@
                     } else if (itm.discount_type === 'fixed') {
                         label = ' (Fixed)';
                     }
-                    itemDiscountHtml = '<span class="text-danger">- $ ' + itemDiscount.toFixed(2) +
-                        '</span><span class="text-muted small">' + label + '</span>';
+                    itemDiscountHtml = '<span class="text-danger">- $ ' + itemDiscount.toFixed(2) + '</span><span class="text-muted small">' + label + '</span>';
                 }
 
                 itemsRows += `
@@ -87,7 +83,6 @@
                 </tr>`;
             });
 
-            // No Items
             if (items.length === 0) {
                 itemsRows = '<tr><td colspan="6" class="text-center text-muted py-3">No items.</td></tr>';
             }
@@ -104,8 +99,7 @@
                 } else if (invoice.discount_type === 'fixed') {
                     label = ' (Fixed)';
                 }
-                invoiceDiscountHtml = '- $ ' + discountAmount.toFixed(2) + '<span class="text-muted small">' + label +
-                    '</span>';
+                invoiceDiscountHtml = '- $ ' + discountAmount.toFixed(2) + '<span class="text-muted small">' + label + '</span>';
             }
 
             body.innerHTML = `
@@ -117,6 +111,14 @@
                     </div>
                     <div class="text-end">
                         ${statusBadge}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6 class="mb-1">Customer</h6>
+                        <div class="fw-semibold">${customerName}</div>
+                        <div class="text-muted small">${customerMobile}</div>
                     </div>
                 </div>
 
@@ -166,20 +168,16 @@
             modal.show();
 
         }
-        // View Invoice end
 
-        // Print Invoice without design
         // function printInvoice(){
         //     let w = window.open('', '_blank');
         //     w.document.write(document.getElementById('invoicePrintArea').innerHTML);
         //     w.print();
         // }
 
-        // Print Invoice another way with design
-        function printInvoice() {
-            // Catch Print Area
+        function printInvoice(){
             let printArea = document.getElementById('invoicePrintArea');
-            if (!printArea) return;
+            if(!printArea) return;
 
             let printWindow = window.open('', '_blank', 'width=800,height=600');
             printWindow.document.write(`
@@ -202,9 +200,7 @@
 
                 <script>
                     window.onload = function() {
-                    // print
                         window.print();
-                        // print close
                         window.onafterprint = function() { window.close(); };
                     };
                 <\/script>
@@ -214,6 +210,6 @@
             `);
             printWindow.document.close();
         }
-        // Print Invoice End
+
     </script>
 @endpush
