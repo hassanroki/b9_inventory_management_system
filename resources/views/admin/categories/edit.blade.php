@@ -1,5 +1,5 @@
 <div class="modal fade" id="categoryEditModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
         <div class="modal-content">
             <form id="categoryEditForm">
                 <input type="hidden" id="categoryEditId" value="">
@@ -28,7 +28,10 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="categoryEditSaveBtn">
-                        <i class="bi bi-check2-circle me-1"></i> Update
+                        <span id="categoryEditSpinner" class="spinner-border spinner-border-sm me-1 d-none"
+                            role="status" aria-hidden="true"></span>
+                        <i class="bi bi-check2-circle me-1" id="categoryEditIcon"></i>
+                        <span id="categoryEditText">Update</span>
                     </button>
                 </div>
             </form>
@@ -74,7 +77,11 @@
             let nameValue = document.getElementById('categoryEditName').value.trim();
             let descriptionValue = document.getElementById('categoryEditDescription').value.trim();
             let statusChecked = document.getElementById('categoryEditStatus').checked;
+
             let saveBtn = document.getElementById('categoryEditSaveBtn');
+            let saveSpinner = document.getElementById('categoryEditSpinner');
+            let saveIcon = document.getElementById('categoryEditIcon');
+            let saveText = document.getElementById('categoryEditText');
 
             let obj = {
                 name: nameValue,
@@ -86,6 +93,9 @@
             let token = localStorage.getItem('token');
 
             saveBtn.disabled = true;
+            saveSpinner.classList.remove('d-none');
+            saveIcon.classList.add('d-none');
+            saveText.textContent = 'Updating...';
 
             try {
                 let response = await axios.put(URL, obj, {
@@ -110,6 +120,9 @@
                 showErrorToast(getErrorMessage(err, 'Failed to update category. Please try again.'));
             } finally {
                 saveBtn.disabled = false;
+                saveSpinner.classList.add('d-none');
+                saveIcon.classList.remove('d-none');
+                saveText.textContent = 'Update';
             }
         }
 

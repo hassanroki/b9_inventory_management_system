@@ -22,4 +22,5 @@ Route::middleware('token.auth')->group(function () {
     Route::get('/stocks', [DashboardController::class, 'stock'])->name('stocks');
     Route::get('/pos', [DashboardController::class, 'pos'])->name('pos');
     Route::get('/invoices', [DashboardController::class, 'invoice'])->name('invoices');
+    Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
 });

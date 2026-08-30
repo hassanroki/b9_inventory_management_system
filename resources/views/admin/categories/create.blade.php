@@ -1,5 +1,5 @@
 <div class="modal fade" id="categoryCreateModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
         <div class="modal-content">
             <form id="categoryCreateForm">
                 <div class="modal-header">
@@ -28,7 +28,10 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" id="categorySaveBtn" class="btn btn-primary">
-                        <i class="bi bi-check2-circle me-1"></i> Save
+                        <span id="categorySaveSpinner" class="spinner-border spinner-border-sm me-1 d-none"
+                            role="status" aria-hidden="true"></span>
+                        <i class="bi bi-check2-circle me-1" id="categorySaveIcon"></i>
+                        <span id="categorySaveText">Save</span>
                     </button>
                 </div>
             </form>
@@ -42,8 +45,11 @@
             let nameValue = document.getElementById('categoryName').value.trim();
             let descriptionValue = document.getElementById('categoryDescription').value.trim();
             let statusChecked = document.getElementById('categoryStatus').checked;
-            let saveBtn = document.getElementById('categorySaveBtn');
 
+            let saveBtn = document.getElementById('categorySaveBtn');
+            let saveSpinner = document.getElementById('categorySaveSpinner');
+            let saveIcon = document.getElementById('categorySaveIcon');
+            let saveText = document.getElementById('categorySaveText');
 
             let obj = {
                 name: nameValue,
@@ -54,7 +60,10 @@
             let URL = '{{ url('/api/v1/categories') }}';
             let token = localStorage.getItem('token');
 
-            saveBtn.disable = true;
+            saveBtn.disabled = true;
+            saveSpinner.classList.remove('d-none');
+            saveIcon.classList.add('d-none');
+            saveText.textContent = 'Saving...';
 
             try {
                 let response = await axios.post(URL, obj, {
@@ -68,11 +77,6 @@
                     let modalEl = document.getElementById('categoryCreateModal');
                     let modal = window.bootstrap.Modal.getInstance(modalEl);
 
-                    // if (modal) {
-                    //     modal.hide();
-                    // }
-
-                    // // or
                     if (modal) modal.hide();
                     document.getElementById('categoryCreateForm').reset();
                     document.getElementById('categoryStatus').checked = true;
@@ -85,7 +89,10 @@
             } catch (error) {
                 showErrorToast(getErrorMessage(error, 'Failed to create category'));
             } finally {
-                saveBtn.disable = false;
+                saveBtn.disabled = false;
+                saveSpinner.classList.add('d-none');
+                saveIcon.classList.remove('d-none');
+                saveText.textContent = 'Save';
             }
         }
 

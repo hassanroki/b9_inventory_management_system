@@ -28,8 +28,13 @@
                 </div>
                 <div class="mb-4">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="••••••••"
-                        autocomplete="current-password">
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="••••••••" autocomplete="current-password">
+                        <button class="btn btn-outline-secondary" type="button" id="togglePassword" tabindex="-1">
+                            <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100" id="loginBtn">Log in</button>
             </form>
@@ -68,8 +73,10 @@
                     if (data && data.token) {
                         localStorage.setItem('token', data.token);
                         // Store token as an HttpOnly safe cookie so the server middleware can read it
-                        document.cookie = 'api_token=' + encodeURIComponent(data.token) + ';path=; max-age=' + (60 * 60 * 24 * 30) // 30 days
-                        + '; SameSite=Lax';
+                        document.cookie = 'api_token=' + encodeURIComponent(data.token) + ';path=; max-age=' + (60 *
+                                60 * 24 * 30) // 30 days
+                            +
+                            '; SameSite=Lax';
                     }
                     window.location = '{{ route('dashboard') }}'
                 } else {
@@ -84,6 +91,23 @@
             e.preventDefault();
             await doLogin();
         })
+
+
+        // Password Hide/Show
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            let passwordInput = document.getElementById('password');
+            let icon = document.getElementById('togglePasswordIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
     </script>
 </body>
 

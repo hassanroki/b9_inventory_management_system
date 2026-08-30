@@ -49,4 +49,10 @@ class DashboardController extends Controller
     {
         return view('admin.invoices.index');
     }
+
+    // Settings
+    public function settings()
+    {
+        return view('admin.settings.index');
+    }
 }

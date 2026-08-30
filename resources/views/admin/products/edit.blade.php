@@ -1,5 +1,5 @@
 <div class="modal fade" id="productEditModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <form id="productEditForm">
                 <input type="hidden" id="productEditId" value="">

@@ -1,6 +1,6 @@
 <!-- Add Product Modal -->
 <div class="modal fade" id="productCreateModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <form id="productCreateForm">
                 <div class="modal-header border-0 pb-0">

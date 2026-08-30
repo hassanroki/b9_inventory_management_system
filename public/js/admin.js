@@ -5,11 +5,21 @@
     "use strict";
 
     const sidebar = document.getElementById("adminSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
     const mobileToggle = document.getElementById("sidebarToggle");
     const collapseToggle = document.getElementById("sidebarCollapseToggle");
     const storageKey = "ims_admin_sidebar_collapsed";
 
-    // Restore collapsed state (desktop)
+    function setSidebarOpen(open) {
+        if (!sidebar) return;
+        sidebar.classList.toggle("show", open);
+        if (overlay) {
+            overlay.classList.toggle("is-visible", open);
+            overlay.hidden = !open;
+        }
+        document.body.style.overflow = open && window.innerWidth < 992 ? "hidden" : "";
+    }
+
     try {
         const collapsed = localStorage.getItem(storageKey) === "1";
         if (collapsed) {
@@ -17,14 +27,18 @@
         }
     } catch (e) {}
 
-    // Mobile show/hide (offcanvas-like)
     if (mobileToggle && sidebar) {
         mobileToggle.addEventListener("click", function () {
-            sidebar.classList.toggle("show");
+            setSidebarOpen(!sidebar.classList.contains("show"));
         });
     }
 
-    // Desktop collapse/expand
+    if (overlay) {
+        overlay.addEventListener("click", function () {
+            setSidebarOpen(false);
+        });
+    }
+
     if (collapseToggle) {
         collapseToggle.addEventListener("click", function () {
             document.body.classList.toggle("sidebar-collapsed");
@@ -39,10 +53,76 @@
         });
     }
 
-    // Logout
+    const dateEl = document.getElementById("headerClock");
+    const dateIcon = document.getElementById("headerMetaIcon");
+    if (dateEl) {
+        let showTime = false;
+        const dateOptions = {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+        };
+        const timeOptions = {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+        };
+
+        function renderClock() {
+            const now = new Date();
+            dateEl.dateTime = now.toISOString();
+            if (showTime) {
+                dateEl.textContent = now.toLocaleTimeString(undefined, timeOptions);
+                if (dateIcon) dateIcon.className = "bi bi-clock";
+            } else {
+                dateEl.textContent = now.toLocaleDateString(undefined, dateOptions);
+                if (dateIcon) dateIcon.className = "bi bi-calendar3";
+            }
+        }
+
+        renderClock();
+        setInterval(renderClock, 1000);
+        setInterval(function () {
+            showTime = !showTime;
+            if (dateEl.classList) {
+                dateEl.classList.add("header-clock-swap");
+                window.setTimeout(function () {
+                    dateEl.classList.remove("header-clock-swap");
+                }, 280);
+            }
+            renderClock();
+        }, 4000);
+    }
+
+    try {
+        const raw = localStorage.getItem("user");
+        const user = raw ? JSON.parse(raw) : {};
+        const name = user.name || user.full_name || user.email || "Admin";
+        const email = user.email || "administrator";
+        const nameEl = document.getElementById("headerUserName");
+        const avatarEl = document.getElementById("headerAvatar");
+        const menuName = document.getElementById("headerMenuUserName");
+        const menuEmail = document.getElementById("headerMenuUserEmail");
+        if (nameEl) nameEl.textContent = name;
+        if (menuName) menuName.textContent = name;
+        if (menuEmail) menuEmail.textContent = email;
+        if (avatarEl) {
+            avatarEl.textContent = String(name).trim().charAt(0).toUpperCase();
+        }
+    } catch (e) {}
+
     const logoutBtn = document.getElementById("logoutBtn");
+    const headerLogoutBtn = document.getElementById("headerLogoutBtn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", async function (e) {
+            e.preventDefault();
+            await doLogout();
+        });
+    }
+    if (headerLogoutBtn) {
+        headerLogoutBtn.addEventListener("click", async function (e) {
             e.preventDefault();
             await doLogout();
         });
@@ -79,6 +159,4 @@
             window.location.href = "/login";
         }
     }
-
-    // logout end
 })();
