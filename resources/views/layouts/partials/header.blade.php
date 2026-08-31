@@ -48,3 +48,6 @@
         </div>
     </div>
 </header>
+
+{{-- Logout confirmation modal --}}
+@include('layouts.partials.logoutModal')

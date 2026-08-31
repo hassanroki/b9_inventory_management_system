@@ -115,16 +115,47 @@
 
     const logoutBtn = document.getElementById("logoutBtn");
     const headerLogoutBtn = document.getElementById("headerLogoutBtn");
+    const confirmLogoutBtn = document.getElementById("confirmLogoutBtn");
+    const logoutConfirmModalEl = document.getElementById("logoutConfirmModal");
+    const logoutConfirmModal = logoutConfirmModalEl ? new bootstrap.Modal(logoutConfirmModalEl) : null;
+
+    // Sidebar and header logout buttons now only OPEN the confirmation modal.
+    // They no longer call doLogout() directly.
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", async function (e) {
+        logoutBtn.addEventListener("click", function (e) {
             e.preventDefault();
-            await doLogout();
+            if (logoutConfirmModal) {
+                logoutConfirmModal.show();
+            } else {
+                doLogout(); // fallback if modal markup isn't present
+            }
         });
     }
     if (headerLogoutBtn) {
-        headerLogoutBtn.addEventListener("click", async function (e) {
+        headerLogoutBtn.addEventListener("click", function (e) {
             e.preventDefault();
+            if (logoutConfirmModal) {
+                logoutConfirmModal.show();
+            } else {
+                doLogout(); // fallback if modal markup isn't present
+            }
+        });
+    }
+
+    // Actual logout only fires when the user confirms inside the modal.
+    if (confirmLogoutBtn) {
+        confirmLogoutBtn.addEventListener("click", async function () {
+            let originalHtml = confirmLogoutBtn.innerHTML;
+            confirmLogoutBtn.disabled = true;
+            confirmLogoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Logging out...';
+
             await doLogout();
+
+            confirmLogoutBtn.disabled = false;
+            confirmLogoutBtn.innerHTML = originalHtml;
+            if (logoutConfirmModal) {
+                logoutConfirmModal.hide();
+            }
         });
     }
 
